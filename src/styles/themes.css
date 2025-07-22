@@ -1,0 +1,223 @@
+/* Variáveis CSS para tema claro (padrão) */
+:root {
+  /* Cores principais */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  
+  /* Cores de fundo */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  
+  /* Cores de texto */
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #868e96;
+  
+  /* Cores de borda */
+  --border-color: #dee2e6;
+  --border-light: #e9ecef;
+  
+  /* Cores de card */
+  --card-bg: #ffffff;
+  --card-border: #dee2e6;
+  --card-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  
+  /* Cores de hover */
+  --hover-bg: #f8f9fa;
+  --hover-border: #007bff;
+  
+  /* Cores de input */
+  --input-bg: #ffffff;
+  --input-border: #ced4da;
+  --input-focus-border: #86b7fe;
+  --input-focus-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  
+  /* Cores de modal */
+  --modal-bg: rgba(0, 0, 0, 0.5);
+  --modal-content-bg: #ffffff;
+  
+  /* Cores de sidebar */
+  --sidebar-bg: #ffffff;
+  --sidebar-text: #212529;
+  --sidebar-active: #007bff;
+  --sidebar-hover: #f8f9fa;
+  
+  /* Cores de botões */
+  --btn-primary-bg: #007bff;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #6c757d;
+  --btn-secondary-text: #ffffff;
+  
+  /* Cores de status */
+  --success-light: #d4edda;
+  --danger-light: #f8d7da;
+  --warning-light: #fff3cd;
+  --info-light: #d1ecf1;
+}
+
+/* Variáveis CSS para tema escuro */
+[data-theme="dark"] {
+  /* Cores principais */
+  --primary-color: #4dabf7;
+  --secondary-color: #adb5bd;
+  --success-color: #51cf66;
+  --danger-color: #ff6b6b;
+  --warning-color: #ffd43b;
+  --info-color: #74c0fc;
+  
+  /* Cores de fundo */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #404040;
+  
+  /* Cores de texto */
+  --text-primary: #ffffff;
+  --text-secondary: #adb5bd;
+  --text-muted: #868e96;
+  
+  /* Cores de borda */
+  --border-color: #404040;
+  --border-light: #2d2d2d;
+  
+  /* Cores de card */
+  --card-bg: #2d2d2d;
+  --card-border: #404040;
+  --card-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  
+  /* Cores de hover */
+  --hover-bg: #404040;
+  --hover-border: #4dabf7;
+  
+  /* Cores de input */
+  --input-bg: #404040;
+  --input-border: #6c757d;
+  --input-focus-border: #4dabf7;
+  --input-focus-shadow: 0 0 0 0.25rem rgba(77, 171, 247, 0.25);
+  
+  /* Cores de modal */
+  --modal-bg: rgba(0, 0, 0, 0.7);
+  --modal-content-bg: #2d2d2d;
+  
+  /* Cores de sidebar */
+  --sidebar-bg: #2d2d2d;
+  --sidebar-text: #ffffff;
+  --sidebar-active: #4dabf7;
+  --sidebar-hover: #404040;
+  
+  /* Cores de botões */
+  --btn-primary-bg: #4dabf7;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #6c757d;
+  --btn-secondary-text: #ffffff;
+  
+  /* Cores de status */
+  --success-light: #2b4a2b;
+  --danger-light: #4a2b2b;
+  --warning-light: #4a4a2b;
+  --info-light: #2b4a4a;
+}
+
+/* Aplicação das variáveis CSS */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cards */
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Inputs */
+.form-control {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.form-control:focus {
+  background-color: var(--input-bg);
+  border-color: var(--input-focus-border);
+  box-shadow: var(--input-focus-shadow);
+  color: var(--text-primary);
+}
+
+/* Botões */
+.btn-primary {
+  background-color: var(--btn-primary-bg);
+  border-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+
+.btn-secondary {
+  background-color: var(--btn-secondary-bg);
+  border-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+}
+
+/* Modais */
+.fundo-modal {
+  background-color: var(--modal-bg);
+}
+
+.fundo-modal .card {
+  background-color: var(--modal-content-bg);
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+}
+
+.sidebar .nav-link {
+  color: var(--sidebar-text);
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: var(--sidebar-hover);
+  color: var(--sidebar-active);
+}
+
+/* Textos */
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* Bordas */
+.border {
+  border-color: var(--border-color) !important;
+}
+
+.border-light {
+  border-color: var(--border-light) !important;
+}
+
+/* Hover effects */
+.conta-card:hover {
+  border-color: var(--hover-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Transições suaves */
+* {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease;
+} 

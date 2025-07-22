@@ -1,0 +1,124 @@
+/* Variáveis CSS específicas do app (compatibilidade) */
+:root {
+  /* Cores específicas do app que não mudam com o tema */
+  --primary-light: #e7e9f8;
+  --accent-color: #635bff;
+  
+  /* Fontes sofisticadas */
+  --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+p {
+  margin: 0;
+}
+ul {
+  padding: 0;
+}
+/* Base Styles */
+body {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-normal);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+.fundo-modal{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--modal-bg);
+  z-index: 1000;
+}
+.content-section{
+  /* margin-top: 10px; */
+  padding-bottom: 100px;
+}
+.controles-section {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+@media (max-width: 600px) {
+  .controles-section {
+    padding: 1rem 0 4rem 0.2rem;
+  }
+  .add-controle-box {
+    padding: 1rem 0.5rem;
+  }
+}
+.titulo-section {
+  font-weight: 700;
+  /* margin-bottom: 2rem; */
+  text-align: center;
+}
+/* Tipografia sofisticada */
+.heading-1 {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: 2.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.heading-2 {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: 2rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.heading-3 {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.heading-4 {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.body-large {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-normal);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.body-medium {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-normal);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.body-small {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-normal);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.caption {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
