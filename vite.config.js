@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/ydin/', // <-- coloque o nome do seu repo aqui!
+  base: '/ydinv/', // <-- coloque o nome do seu repo aqui!
   plugins: [
     vue(),
     VitePWA({
