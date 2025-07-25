@@ -242,13 +242,13 @@ export default{
     </div>
     <!-- Removido o formulário antigo aqui -->
     <ul class="lista-controles">
-      <li v-for="(item) in listaControles" :key="item.id" class="controle-card mb-4 p-3 rounded shadow-sm bg-white">
+      <li v-for="(item) in listaControles" :key="item.id" class="controle-card mb-4 p-3 rounded shadow-sm bg-light.bg-gradient">
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div class="d-flex align-items-center gap-2">
             <strong class="controle-nome">{{ item.nome }}</strong>
-            <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
+            <!-- <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
               <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
-            </button>
+            </button> -->
             <div v-if="item.descricao" class="text-muted small mt-1">{{ item.descricao }}</div>
           </div>
           <div class="d-flex align-items-center gap-2">
@@ -266,11 +266,16 @@ export default{
             </div>
           </div>
         </div>
-        <div class="soma-lancamentos mb-2 ms-1">
+        <div class="soma-lancamentos mb-2 ms-1 d-flex align-items-center justify-content-between">
           <span class="text-secondary small">
             Total: <strong>{{ formatCurrency(somaLancamentosPorControle[item.id] || 0, true) }}</strong>
-            <span class="badge bg-secondary ms-2">{{ quantidadeLancamentosPorControle[item.id] }} lançamento<span v-if="quantidadeLancamentosPorControle[item.id] !== 1">s</span></span>
           </span>
+          <div>
+            <span class="badge bg-secondary ms-2">{{ quantidadeLancamentosPorControle[item.id] }} lançamento<span v-if="quantidadeLancamentosPorControle[item.id] !== 1">s</span></span>
+            <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
+              <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+              </button>
+          </div>
         </div>
         <ul v-show="controlesExpandidos[item.id]" class="lista-lancamentos mt-3">
           <li v-for="l in listaLancamentos.filter(l => l.idControle === item.id)" :key="l.id" class="lancamento-item d-flex align-items-center justify-content-between p-2 mb-2 rounded" :class="{ 'lancamento-pago': l.pago }">
@@ -338,7 +343,7 @@ export default{
 }
 .controle-card {
   border-left: 4px solid #0d6efd;
-  background: #fff;
+  background: #e6e6e6;
 }
 .controle-nome {
   font-size: 1.15rem;
@@ -378,7 +383,7 @@ export default{
   margin: 0;
 }
 .lancamento-item {
-  background: #f1f3f6;
+  background: #ffffff;
   border-radius: 8px;
   font-size: 1rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
