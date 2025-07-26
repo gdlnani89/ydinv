@@ -46,7 +46,7 @@ export default defineConfig({
         display: 'standalone',
         orientation: 'portrait',
         scope: '/ydinv/',
-        start_url: '/ydinv/#/',
+        start_url: '/ydinv/',
         icons: [
           {
             src: 'pwa-192x192.png',
