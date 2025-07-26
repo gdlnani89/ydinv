@@ -22,6 +22,13 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label">Tipo</label>
+                <select class="form-control" v-model="tipo">
+                    <option v-for="t in tipos" :key="t" :value="t">{{ t }}</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label for="" class="form-label">Valor</label>
                 <input 
                     type="text"
@@ -69,6 +76,21 @@ export default {
     data(){
         return{
             descricao:'',
+            tipos: [
+                'Investimentos',
+                'Mercado',
+                'Bobagens',
+                'Transporte',
+                'Saúde',
+                'Educação',
+                'Lazer',
+                'Moradia',
+                'Serviços',
+                'Namorada',
+                'Viagem',
+                'Outros'
+            ],
+            tipo: 'Investimentos', // Valor inicial para o tipo
             valor:'',
             dia: new Date().getDate(),
             conta: '',
@@ -109,6 +131,10 @@ export default {
                 alert('Por favor, digite um valor válido')
                 return
             }
+            if(!this.tipo.trim()){
+                alert('Por favor, selecione um tipo')
+                return
+            }
             
             const valorNumerico = parseFloat(this.valor.replace(/\D/g, '')) / 100 || 0;
             if(valorNumerico <= 0){
@@ -145,15 +171,11 @@ export default {
             const despesa = {
                 id: this.modoEdicao ? this.despesaEditando.id : Date.now(),
                 descricao: this.descricao,
+                tipo: this.tipo,
                 valor: valorNumerico.toString(),
                 data: dataCompleta,
                 contaId: this.conta
             }
-            
-            console.log('Salvando despesa:', {
-                modoEdicao: this.modoEdicao,
-                despesa: despesa
-            });
             
             // Emite o evento apropriado baseado no modo
             if (this.modoEdicao) {
@@ -225,7 +247,7 @@ export default {
         },
         
         resetarFormulario() {
-            this.descricao = '';
+            this.descricao = ''; // Reseta para o primeiro tipo
             this.valor = '';
             this.dia = new Date().getDate();
             this.conta = '';

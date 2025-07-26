@@ -63,38 +63,17 @@
                     </a>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
-                <div>
-                    <h4>Últimas Transações</h4>
-                </div>
-                <ul class="list-mobile">
-                    <li v-for="transacao in ultimasTransacoes" :key="transacao.id" class="d-flex">
-                        <i :class="['bi', transacao.tipo === 'receita' ? 'bi-arrow-up-circle-fill text-success' : 'bi-arrow-down-circle-fill text-danger']"></i>
-                        <div class="transaction-info d-flex flex-column ms-2">
-                            <span class="transaction-description">{{ transacao.descricao }}</span>
-                            <span class="transaction-amount" :class="transacao.tipo === 'receita' ? 'text-success' : 'text-danger'">
-                                {{ transacao.tipo === 'receita' ? '+' : '-' }} {{ formatCurrency(transacao.valor) }}
-                            </span>
-                        </div>
+            <div class="card card-totais-tipo mt-3">
+                <h5 class="mb-2 ms-2" style="font-size:1.08rem; color:#2563eb;">Despesas do mês por categoria</h5>
+                <ul class="totais-tipo-list">
+                    <li v-for="(valor, tipo) in totaisPorTipoMesAtual" :key="tipo" class="d-flex justify-content-between align-items-center py-1 px-2">
+                        <span class="tipo-label">{{ tipo }}</span>
+                        <span class="tipo-total">{{ formatCurrency(valor) }}</span>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card">
-                <div>
-                    <h4>Despesas por Categoria</h4>
-                </div>
-                <div class="chart-container">
-                    <canvas ref="categoryPieChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div> -->
+    </div>
     <ModalCadastraNome v-show="modalCadastro" :modal="modalCadastro" @fechar-modal="fecharModal"/>
     <ModalCadastraConta 
       v-show="modalConta" 
@@ -147,7 +126,24 @@ export default {
         },
         saldoTotal() {
             return this.totalReceitas - this.totalDespesas;
-        }
+        },
+        totaisPorTipoMesAtual() {
+            // Agrupa despesas do mês atual por tipo
+            if (!this.despesas || !Array.isArray(this.despesas)) return {};
+            const now = new Date();
+            const mesAtual = String(now.getMonth() + 1).padStart(2, '0');
+            const anoAtual = String(now.getFullYear());
+            const totais = {};
+            this.despesas.forEach(despesa => {
+                if (!despesa.data || !despesa.tipo) return;
+                const [ano, mes] = despesa.data.split('-');
+                if (ano === anoAtual && mes === mesAtual) {
+                    if (!totais[despesa.tipo]) totais[despesa.tipo] = 0;
+                    totais[despesa.tipo] += Number(despesa.valor || 0);
+                }
+            });
+            return totais;
+        },
     },
     data(){
         return{
@@ -489,5 +485,27 @@ export default {
 .toast-conta-erro i {
   font-size: 1.3rem;
   color: #fff;
+}
+.card-totais-tipo {
+  margin-top: 1.1rem;
+  background: #f8fafc;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.06);
+  padding: 1rem 0.7rem 0.7rem 0.7rem;
+}
+.totais-tipo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tipo-label {
+  font-size: 1rem;
+  color: #444;
+  font-weight: 500;
+}
+.tipo-total {
+  font-size: 1rem;
+  color: #2563eb;
+  font-weight: 700;
 }
 </style>
