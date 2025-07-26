@@ -3,6 +3,7 @@ import ModalCadastraLancamento from './ModalCadastraLancamento.vue';
 import { formatCurrency } from '../utils/formatters.js';
 import ModalCadastraControle from './ModalCadastraControle.vue';
 import ModalGerenciaControles from './ModalGerenciaControles.vue';
+import { markRaw } from 'vue';
 
 export default{
   data(){
@@ -48,6 +49,26 @@ export default{
       this.listaControles.forEach(controle => {
         soma[controle.id] = this.listaLancamentos
           .filter(l => l.idControle === controle.id)
+          .reduce((acc, l) => acc + Number(l.valor || 0), 0);
+      });
+      return soma;
+    },
+    somaPagosPorControle() {
+      // Soma apenas os lançamentos pagos
+      const soma = {};
+      this.listaControles.forEach(controle => {
+        soma[controle.id] = this.listaLancamentos
+          .filter(l => l.idControle === controle.id && l.pago)
+          .reduce((acc, l) => acc + Number(l.valor || 0), 0);
+      });
+      return soma;
+    },
+    somaSelecionadaPorControle() {
+      // Retorna um objeto: { [idControle]: soma }
+      const soma = {};
+      this.listaControles.forEach(controle => {
+        soma[controle.id] = this.listaLancamentos
+          .filter(l => l.idControle === controle.id && l.soma)
           .reduce((acc, l) => acc + Number(l.valor || 0), 0);
       });
       return soma;
@@ -105,6 +126,7 @@ export default{
       if (!Array.isArray(lancamentos)) lancamentos = [lancamentos];
       lancamentos.forEach(lancamento => {
         lancamento.idControle = this.controleSelecionado.id;
+        if(typeof lancamento.soma === 'undefined') lancamento.soma = false; // Garante que soma esteja definida
         if (this.lancamentoEditando) {
           // Atualizar lançamento existente
           const idx = this.listaLancamentos.findIndex(l => l.id === this.lancamentoEditando.id);
@@ -122,6 +144,10 @@ export default{
     marcarPago(lancamento) {
       lancamento.pago = !lancamento.pago;
       this.listaLancamentos = [...this.listaLancamentos];
+    },
+    marcarSoma(lancamento) {
+      lancamento.soma = !lancamento.soma;
+      this.listaLancamentos = [...this.listaLancamentos]; // força reatividade
     },
     formatCurrency,
     abrirModalControle() {
@@ -213,9 +239,22 @@ export default{
         this.listaLancamentos = this.listaLancamentos.filter(l => l.idControle !== controle.id);
       }
     },
-  },
-  mounted(){
-
+    formatarDataLancamento(lancamento) {
+      if (lancamento.parcela && lancamento.data) {
+        // Espera que a data esteja no formato "yyyy-mm-dd" ou similar
+        const [ano, mes] = lancamento.data.split('-');
+        return `${mes}/${ano.slice(-2)}`;
+      }
+      return lancamento.data;
+    },
+    lancamentosOrdenados(idControle) {
+      return this.listaLancamentos
+        .filter(l => l.idControle === idControle)
+        .sort((a, b) => {
+          if (a.pago === b.pago) return 0;
+          return a.pago ? 1 : -1; // pagos vão para o final
+        });
+    }
   },
   components: {ModalCadastraLancamento, ModalCadastraControle, ModalGerenciaControles}
 }
@@ -266,23 +305,31 @@ export default{
             </div>
           </div>
         </div>
-        <div class="soma-lancamentos mb-2 ms-1 d-flex align-items-center justify-content-between">
-          <span class="text-secondary small">
-            Total: <strong>{{ formatCurrency(somaLancamentosPorControle[item.id] || 0, true) }}</strong>
-          </span>
-          <div>
+        <div class="soma-lancamentos mb-2 ms-1 d-flex align-items-center justify-content-between flex-column align-items-start">
+          <div class="d-flex align-items-center justify-content-between w-100">
+            <div class="d-flex flex-column">
+              <span class="text-secondary small">
+                Inicial: <strong>{{ formatCurrency(somaLancamentosPorControle[item.id] || 0, true) }}</strong>
+              </span>
+              <span class="text-secondary small mt-1">
+                Restante: <strong>{{ formatCurrency((somaLancamentosPorControle[item.id] || 0) - (somaPagosPorControle[item.id] || 0), true) }}</strong>
+              </span>
+            </div>
+            <span class="ms-3">Soma: <strong>{{ formatCurrency(somaSelecionadaPorControle[item.id] || 0, true) }}</strong></span>
+          </div>
+          <div class="w-100 d-flex align-items-center justify-content-between mt-1">
             <span class="badge bg-secondary ms-2">{{ quantidadeLancamentosPorControle[item.id] }} lançamento<span v-if="quantidadeLancamentosPorControle[item.id] !== 1">s</span></span>
             <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
               <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
               </button>
           </div>
         </div>
-        <ul v-show="controlesExpandidos[item.id]" class="lista-lancamentos mt-3">
-          <li v-for="l in listaLancamentos.filter(l => l.idControle === item.id)" :key="l.id" class="lancamento-item d-flex align-items-center justify-content-between p-2 mb-2 rounded" :class="{ 'lancamento-pago': l.pago }">
+        <transition-group v-show="controlesExpandidos[item.id]" name="fade-move" tag="ul" class="lista-lancamentos mt-3">
+          <li v-for="l in lancamentosOrdenados(item.id)" :key="l.id + '-' + l.pago" class="lancamento-item d-flex align-items-center justify-content-between p-2 mb-2 rounded" :class="{ 'lancamento-pago': l.pago }">
             <div>
               <div class="d-flex flex-column">
                 <span class="lancamento-valor text-success fw-bold">{{ formatCurrency(l.valor, true) }}</span>
-                <span class="lancamento-data text-muted">{{ l.data }}</span>
+                <span class="lancamento-data text-muted">{{ formatarDataLancamento(l) }}</span>
               </div>
               <span class="lancamento-desc">{{ l.descricao }}</span>
               <span v-if="l.parcela" class="badge bg-info">Parcela {{ l.parcela }}</span>
@@ -290,6 +337,8 @@ export default{
             <div class="d-flex align-items-center gap-2">
               <input type="checkbox" class="form-check-input me-1" :checked="l.pago" @change="marcarPago(l)">
               <span class="small">Pago</span>
+              <input type="checkbox" class="form-check-input me-1" :checked="l.soma" @change="marcarSoma(l)">
+              <span class="small">Soma</span>
               <div v-if="controlesEmEdicao[item.id]" class="d-flex gap-1">
                 <button class="btn btn-sm btn-outline-primary" @click="abrirModalEditarLancamento(item, l)">
                   <i class="bi bi-pencil"></i>
@@ -300,7 +349,7 @@ export default{
               </div>
             </div>
           </li>
-        </ul>
+        </transition-group>
       </li>
     </ul>
     <ModalCadastraLancamento
@@ -329,7 +378,17 @@ export default{
 
 <style scoped>
 
-
+.fade-move-enter-active, .fade-move-leave-active {
+  transition: all 0.9s cubic-bezier(.55,0,.1,1);
+}
+.fade-move-enter-from, .fade-move-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.fade-move-leave-active {
+  position: absolute;
+  
+}
 .add-controle-box {
   background: #f8f9fa;
   border-radius: 12px;
