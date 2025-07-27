@@ -106,42 +106,42 @@ export default{
       </div>
 
       <!-- Resumo dos Investimentos -->
-      <div class="row mb-2">
-      <div class="col-md-4">
-        <div class="card summary-card">
-          <div class="summary-icon bg-primary-light">
-            <i class="bi bi-wallet2 text-primary"></i>
-          </div>
-          <div class="summary-content">
-            <h6 class="summary-label">Total Investido</h6>
-            <h4 class="summary-value">{{ formatBalanceWithPrivacy(totalInvestido) }}</h4>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card summary-card">
-          <div class="summary-icon bg-success-light">
-            <i class="bi bi-graph-up text-success"></i>
-          </div>
-          <div class="summary-content">
-            <h6 class="summary-label">Valor Atual</h6>
-            <h4 class="summary-value">{{ formatBalanceWithPrivacy(valorAtualTotal) }}</h4>
+      <div class="d-flex align-items-center header-investimentos">
+        <div class="col-md-2">
+          <div class="card summary-card">
+            <div class="summary-icon bg-primary-light">
+              <i class="bi bi-wallet2 text-primary"></i>
+            </div>
+            <div class="summary-content">
+              <h6 class="summary-label">Total Investido</h6>
+              <h4 class="summary-value">{{ formatBalanceWithPrivacy(totalInvestido) }}</h4>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card summary-card">
-          <div class="summary-icon" :class="getRentabilidadeClass(rentabilidadeTotal) === 'text-success' ? 'bg-success-light' : getRentabilidadeClass(rentabilidadeTotal) === 'text-danger' ? 'bg-danger-light' : 'bg-muted-light'">
-            <i :class="['bi', getRentabilidadeIcon(rentabilidadeTotal), getRentabilidadeClass(rentabilidadeTotal)]"></i>
-          </div>
-          <div class="summary-content">
-            <h6 class="summary-label">Rentabilidade</h6>
-            <h4 class="summary-value" :class="getRentabilidadeClass(rentabilidadeTotal)">
-              {{ rentabilidadeTotal.toFixed(2) }}%
-            </h4>
+        <div class="col-md-4">
+          <div class="card summary-card">
+            <div class="summary-icon bg-success-light">
+              <i class="bi bi-graph-up text-success"></i>
+            </div>
+            <div class="summary-content">
+              <h6 class="summary-label">Valor Atual</h6>
+              <h4 class="summary-value">{{ formatBalanceWithPrivacy(valorAtualTotal) }}</h4>
+            </div>
           </div>
         </div>
-      </div>
+        <div class="col-md-4">
+          <div class="card summary-card">
+            <div class="summary-icon" :class="getRentabilidadeClass(rentabilidadeTotal) === 'text-success' ? 'bg-success-light' : getRentabilidadeClass(rentabilidadeTotal) === 'text-danger' ? 'bg-danger-light' : 'bg-muted-light'">
+              <i :class="['bi', getRentabilidadeIcon(rentabilidadeTotal), getRentabilidadeClass(rentabilidadeTotal)]"></i>
+            </div>
+            <div class="summary-content">
+              <h6 class="summary-label">Rentabilidade</h6>
+              <h4 class="summary-value" :class="getRentabilidadeClass(rentabilidadeTotal)">
+                {{ rentabilidadeTotal.toFixed(2) }}%
+              </h4>
+            </div>
+          </div>
+        </div>
     </div>
 
     </div>
@@ -254,16 +254,23 @@ export default{
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
   overflow: hidden;
 }
 
 .header-section {
+  position: relative;
   flex-shrink: 0;
-  padding: 0.75rem;
+  padding: 0 0.75rem;
   background: white;
   border-bottom: 1px solid #e9ecef;
 }
-
+.header-investimentos {
+  position: relative;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 1rem;
+}
 .scrollable-content {
   flex: 1;
   overflow-y: auto;

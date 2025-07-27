@@ -43,57 +43,49 @@
                         <option value="">Selecione uma conta</option>
                         <option v-for="conta in contas" :key="conta.id" :value="conta.nome">{{ conta.nome }}</option>
                     </select>
-                    <div v-if="!contas || contas.length === 0" class="text-danger mt-1" style="font-size:0.95rem;">Nenhuma conta disponível. Cadastre uma conta antes de investir.</div>
+                    <div v-if="!contas || contas.length === 0" class="text-danger mt-1" style="font-size:0.95rem;">Nenhuma conta disponível. Cadastre uma conta no dashboard.</div>
                 </div>
     
                 
-                <div class="d-flex align-items-center mb-3 gap-1">
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label class="form-label">Valor Inicial</label>
-                            <input 
-                                type="text"
-                                class="form-control"
-                                v-model="valorInicial"
-                                placeholder="0,00"
-                                @input="formatarComoMoedaInicial"
-                                >
-                        </div>
+                <div class="d-flex align-items-center justify-content-between mb-">
+                    <div class="mb-3">
+                        <label class="form-label">Valor <br>Inicial</label>
+                        <input 
+                            type="text"
+                            class="form-control input-modal"
+                            v-model="valorInicial"
+                            placeholder="0,00"
+                            @input="formatarComoMoedaInicial"
+                            >
                     </div>
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label class="form-label">Valor Atual</label>
-                            <input 
-                                type="text"
-                                class="form-control"
-                                v-model="valorAtual"
-                                placeholder="0,00"
-                                @input="formatarComoMoedaAtual"
-                                >
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Valor <br>Atual</label>
+                        <input 
+                            type="text"
+                            class="form-control input-modal"
+                            v-model="valorAtual"
+                            placeholder="0,00"
+                            @input="formatarComoMoedaAtual"
+                            >
                     </div>
                 </div>
     
-                <div class="d-flex align-items-center mb-3 gap-1">
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label class="form-label">Data de Aplicação</label>
-                            <input 
-                                type="date"
-                                class="form-control"
-                                v-model="dataAplicacao"
-                                >
-                        </div>
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="mb-3">
+                        <label class="form-label">Data de <br>Aplicação</label>
+                        <input 
+                            type="date"
+                            class="form-control input-modal"
+                            v-model="dataAplicacao"
+                            >
                     </div>
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label class="form-label">Data de Vencimento</label>
-                            <input 
-                                type="date"
-                                class="form-control"
-                                v-model="dataVencimento"
-                                >
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label">Data de <br>Vencimento</label>
+                        <input 
+                            type="date"
+                            class="form-control input-modal"
+                            v-model="dataVencimento"
+                            >
                     </div>
                 </div>
     
@@ -182,10 +174,10 @@ export default {
             }
             
             const valorAtual = parseFloat(this.valorAtual.replace(/\D/g, '')) / 100 || 0;
-            if(!this.valorAtual || this.valorAtual === '0,00' || valorAtual <= 0){
-                alert('Por favor, digite um valor atual válido')
-                return
-            }
+            // if(!this.valorAtual || this.valorAtual === '0,00' || valorAtual <= 0){
+            //     alert('Por favor, digite um valor atual válido')
+            //     return
+            // }
 
             if(!this.tipo){
                 alert('Por favor, selecione o tipo de investimento')
@@ -213,11 +205,6 @@ export default {
                 observacoes: this.observacoes.trim() || null,
                 banco: this.banco
             }
-            
-            console.log('Salvando investimento:', {
-                modoEdicao: this.modoEdicao,
-                investimento: investimento
-            });
             
             if (this.modoEdicao) {
                 this.$emit('atualizar-investimento', investimento);
@@ -349,6 +336,9 @@ export default {
     z-index: 1000;
 }
 
+.input-modal {
+    max-width: 140px;
+}
 .card-modal {
     background: var(--modal-content-bg);
     border-radius: 12px;
@@ -360,9 +350,11 @@ export default {
 }
 
 .card-title {
-    margin-bottom: 1.5rem;
+    margin-bottom: .5rem;
     color: var(--text-primary);
     font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
 }
 
 .form-label {

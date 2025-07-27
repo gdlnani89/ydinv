@@ -38,10 +38,6 @@
                         <span class="label-expenses"><i class="bi bi-arrow-down"></i> Despesas</span>
                         <span class="value-expenses">{{ formatBalanceWithPrivacy(totalDespesas) }}</span>
                     </div>
-                    <!-- <div class="summary-item" v-if="totalDespesasFuturas !== '0,00'">
-                        <span class="label-futuras"><i class="bi bi-calendar-event"></i> Futuras</span>
-                        <span class="value-futuras">R$ {{ totalDespesasFuturas }}</span>
-                    </div> -->
                 </div>
             </div>
         </div>
