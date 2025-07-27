@@ -215,7 +215,6 @@ export default {
         this.carregaNome()
         // Escuta o evento para abrir o modal de cadastro
         window.addEventListener('abrir-modal-cadastro-conta', this.abrirModalConta)
-        console.log('DashBoardView mounted, ThemeToggle component:', this.$options.components.ThemeToggle)
     },
     beforeUnmount(){
         // Remove o listener quando o componente for destruído

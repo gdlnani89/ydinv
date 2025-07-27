@@ -1,141 +1,118 @@
 <template>
     <div class="fundo-modal">
-        <div class="card">
+        <div class="card-modal">
             <h5 class="card-title">{{ modoEdicao ? 'Editar Investimento' : 'Cadastrar Investimento' }}</h5>
-
-            <div class="mb-3">
-                <label class="form-label">Nome do Investimento</label>
-                <input
-                    v-model="nome"
-                    type="text"
-                    class="form-control"
-                    placeholder="Ex: CDB Banco X, Ações Petrobras..."
-                >
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Tipo de Investimento</label>
-                <select 
-                    class="form-control"
-                    v-model="tipo"
+            <div class="overflow-auto" style="max-height: 80vh;">
+                <div class="mb-3">
+                    <label class="form-label">Nome do Investimento</label>
+                    <input
+                        v-model="nome"
+                        type="text"
+                        class="form-control"
+                        placeholder="Ex: CDB Banco X, Ações Petrobras..."
                     >
-                    <option value="">Selecione o tipo</option>
-                    <option value="CDB">CDB</option>
-                    <option value="LCI/LCA">LCI/LCA</option>
-                    <option value="Tesouro Direto">Tesouro Direto</option>
-                    <option value="Ações">Ações</option>
-                    <option value="Fundos">Fundos</option>
-                    <option value="Poupança">Poupança</option>
-                    <option value="Previdência">Previdência</option>
-                    <option value="Criptomoedas">Criptomoedas</option>
-                    <option value="Outros">Outros</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Banco/Instituição</label>
-                <select 
-                    class="form-control"
-                    v-model="banco"
-                    @change="onBancoChange"
+                </div>
+    
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Investimento</label>
+                    <select 
+                        class="form-control"
+                        v-model="tipo"
+                        >
+                        <option value="">Selecione o tipo</option>
+                        <option value="CDB">CDB</option>
+                        <option value="LCI/LCA">LCI/LCA</option>
+                        <option value="Tesouro Direto">Tesouro Direto</option>
+                        <option value="Ações">Ações</option>
+                        <option value="Fundos">Fundos</option>
+                        <option value="Poupança">Poupança</option>
+                        <option value="Previdência">Previdência</option>
+                        <option value="Criptomoedas">Criptomoedas</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+    
+                <div class="mb-3">
+                    <label class="form-label">Banco/Instituição</label>
+                    <select 
+                        class="form-control"
+                        v-model="banco"
+                        @change="onBancoChange"
+                        :disabled="!contas || contas.length === 0"
                     >
-                    <option value="">Selecione o banco</option>
-                    <option value="Nubank">Nubank</option>
-                    <option value="Itaú">Itaú</option>
-                    <option value="Bradesco">Bradesco</option>
-                    <option value="Santander">Santander</option>
-                    <option value="Caixa Econômica Federal">Caixa Econômica Federal</option>
-                    <option value="Banco do Brasil">Banco do Brasil</option>
-                    <option value="Banco Inter">Banco Inter</option>
-                    <option value="C6 Bank">C6 Bank</option>
-                    <option value="PagSeguro">PagSeguro</option>
-                    <option value="Mercado Pago">Mercado Pago</option>
-                    <option value="XP Investimentos">XP Investimentos</option>
-                    <option value="Rico">Rico</option>
-                    <option value="Clear">Clear</option>
-                    <option value="BTG Pactual">BTG Pactual</option>
-                    <option value="Warren">Warren</option>
-                    <option value="Easynvest">Easynvest</option>
-                    <option value="Nu Invest">Nu Invest</option>
-                    <option value="Outros">Outros</option>
-                </select>
-            </div>
-
-            <div class="mb-3" v-if="banco === 'Outros'">
-                <label class="form-label">Nome do Banco/Instituição</label>
-                <input
-                    v-model="bancoOutros"
-                    type="text"
-                    class="form-control"
-                    placeholder="Digite o nome do banco ou instituição..."
-                >
-            </div>
-
-            <div class="row">
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label class="form-label">Valor Inicial</label>
-                        <input 
-                            type="text"
-                            class="form-control"
-                            v-model="valorInicial"
-                            placeholder="0,00"
-                            @input="formatarComoMoedaInicial"
-                            >
+                        <option value="">Selecione uma conta</option>
+                        <option v-for="conta in contas" :key="conta.id" :value="conta.nome">{{ conta.nome }}</option>
+                    </select>
+                    <div v-if="!contas || contas.length === 0" class="text-danger mt-1" style="font-size:0.95rem;">Nenhuma conta disponível. Cadastre uma conta antes de investir.</div>
+                </div>
+    
+                
+                <div class="d-flex align-items-center mb-3 gap-1">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Valor Inicial</label>
+                            <input 
+                                type="text"
+                                class="form-control"
+                                v-model="valorInicial"
+                                placeholder="0,00"
+                                @input="formatarComoMoedaInicial"
+                                >
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Valor Atual</label>
+                            <input 
+                                type="text"
+                                class="form-control"
+                                v-model="valorAtual"
+                                placeholder="0,00"
+                                @input="formatarComoMoedaAtual"
+                                >
+                        </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label class="form-label">Valor Atual</label>
-                        <input 
-                            type="text"
-                            class="form-control"
-                            v-model="valorAtual"
-                            placeholder="0,00"
-                            @input="formatarComoMoedaAtual"
-                            >
+    
+                <div class="d-flex align-items-center mb-3 gap-1">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Data de Aplicação</label>
+                            <input 
+                                type="date"
+                                class="form-control"
+                                v-model="dataAplicacao"
+                                >
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Data de Vencimento</label>
+                            <input 
+                                type="date"
+                                class="form-control"
+                                v-model="dataVencimento"
+                                >
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label class="form-label">Data de Aplicação</label>
-                        <input 
-                            type="date"
-                            class="form-control"
-                            v-model="dataAplicacao"
-                            >
-                    </div>
+    
+                <div class="mb-3">
+                    <label class="form-label">Observações (opcional)</label>
+                    <textarea
+                        v-model="observacoes"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Informações adicionais sobre o investimento..."
+                    ></textarea>
                 </div>
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label class="form-label">Data de Vencimento</label>
-                        <input 
-                            type="date"
-                            class="form-control"
-                            v-model="dataVencimento"
-                            >
-                    </div>
+    
+                <div class="d-flex justify-content-between w-100">
+                    <button class="btn btn-primary" @click="salvarInvestimento">
+                        {{ modoEdicao ? 'Atualizar' : 'Adicionar' }}
+                    </button>
+                    <button @click="fecharModal" class="btn btn-secondary">Fechar</button>
                 </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Observações (opcional)</label>
-                <textarea
-                    v-model="observacoes"
-                    class="form-control"
-                    rows="3"
-                    placeholder="Informações adicionais sobre o investimento..."
-                ></textarea>
-            </div>
-
-            <div class="d-flex justify-content-between w-100">
-                <button class="btn btn-primary" @click="salvarInvestimento">
-                    {{ modoEdicao ? 'Atualizar' : 'Adicionar' }}
-                </button>
-                <button @click="fecharModal" class="btn btn-secondary">Fechar</button>
             </div>
         </div>
     </div>
@@ -159,7 +136,16 @@ export default {
             modoEdicao: false,
             investimentoEditando: null,
             banco: '',
-            bancoOutros: ''
+            contas: JSON.parse(localStorage.getItem('contas')) || []
+        }
+    },
+    watch: {
+        contas: {
+            handler(novasContas) {
+                console.log('[ModalCadastraInvestimento] contas mudou:', novasContas);
+            },
+            immediate: true,
+            deep: true
         }
     },
     watch: {
@@ -172,7 +158,7 @@ export default {
                 }
             },
             immediate: true
-        }
+        },
     },
     methods: {
         fecharModal(){
@@ -189,6 +175,7 @@ export default {
             }
             
             const valorInicial = parseFloat(this.valorInicial.replace(/\D/g, '')) / 100 || 0;
+            
             if(valorInicial <= 0){
                 alert('Por favor, digite um valor inicial válido')
                 return
@@ -215,13 +202,6 @@ export default {
                 return
             }
 
-            if(this.banco === 'Outros' && !this.bancoOutros.trim()){
-                alert('Por favor, digite o nome do banco ou instituição')
-                return
-            }
-
-            const bancoFinal = this.banco === 'Outros' ? this.bancoOutros.trim() : this.banco;
-
             const investimento = {
                 id: this.modoEdicao ? this.investimentoEditando.id : Date.now(),
                 nome: this.nome.trim(),
@@ -231,7 +211,7 @@ export default {
                 dataAplicacao: this.dataAplicacao,
                 dataVencimento: this.dataVencimento || null,
                 observacoes: this.observacoes.trim() || null,
-                banco: bancoFinal
+                banco: this.banco
             }
             
             console.log('Salvando investimento:', {
@@ -351,7 +331,7 @@ export default {
                 maximumFractionDigits: 2,
             });
         }
-    }
+    },
 }
 </script>
 
@@ -369,12 +349,13 @@ export default {
     z-index: 1000;
 }
 
-.card {
+.card-modal {
     background: var(--modal-content-bg);
     border-radius: 12px;
-    padding: 2rem;
+    padding: 1rem;
     max-width: 500px;
     width: 90%;
+    height: 90vh;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 

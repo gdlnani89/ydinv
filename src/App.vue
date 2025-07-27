@@ -441,6 +441,7 @@ onMounted(() => {
     <ModalCadastraInvestimento 
       v-show="modalInvestimento"
       :investimento="investimentoEditando"
+      :contas="contas.value"
       @fechar-modal-investimento="fecharModalInvestimento"
       @adicionar-investimento="adicionarInvestimento"
       @atualizar-investimento="atualizarInvestimento"
