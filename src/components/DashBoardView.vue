@@ -17,11 +17,11 @@
     </div>
     <div class="row">
         <div class="col-lg-7">
-            <div class="card balance-card">
+            <div class="card-total balance-card">
                 <div class="balance-header">
-                    <span class="ms-2">Saldo Total em Contas</span>
+                    <span class="ms-4">Saldo Total em Contas</span>
                     <i
-                        class="me-2 text-white"
+                        class="me-4 text-white"
                         :class="['bi', isBalanceHidden ? 'bi-eye-fill' : 'bi-eye-slash-fill']" 
                         @click="toggleBalancePrivacy"
                         style="cursor: pointer;"
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="col-lg-5">
-            <div class="card quick-actions-card">
+            <div class="">
                 <h4 class="ms-4">Ações</h4>
                 <div class="actions-grid">
                     <a href="#" class="action-item" @click.prevent="$emit('navigate', 'receitas')">
@@ -59,7 +59,7 @@
                     </a>
                 </div>
             </div>
-            <div class="card card-totais-tipo mt-3">
+            <div class="card-totais-tipo mt-3">
                 <h5 class="mb-2 ms-2" style="font-size:1.08rem; color:#2563eb;">Despesas do mês por categoria</h5>
                 <ul class="totais-tipo-list">
                     <li v-for="(valor, tipo) in totaisPorTipoMesAtual" :key="tipo" class="d-flex justify-content-between align-items-center py-1 px-2">
@@ -254,7 +254,7 @@ export default {
     align-items: flex-start;
   }
 }
-.card {
+.card-total{
   border: none;
   margin-bottom: 1.1rem;
   border-radius: 18px;
@@ -341,7 +341,7 @@ export default {
 .action-item {
   text-align: center;
   text-decoration: none;
-  color: var(--text-color, #222);
+  color: #222 !important;
   background: #f8fafc;
   border-radius: 12px;
   padding: 1rem 0.5rem;
@@ -351,6 +351,9 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+}
+.action-item span {
+  color: #222 !important;
 }
 .action-item:hover {
   background: #e0e7ef;
@@ -481,12 +484,16 @@ export default {
   font-size: 1.3rem;
   color: #fff;
 }
-.card-totais-tipo {
+.card-totais-tipo{
   margin-top: 1.1rem;
   background: #f8fafc;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(37,99,235,0.06);
   padding: 1rem 0.7rem 0.7rem 0.7rem;
+  
+}
+.card-totais-tipo h5{
+  color: #222 !important;
 }
 .totais-tipo-list {
   list-style: none;
@@ -495,12 +502,12 @@ export default {
 }
 .tipo-label {
   font-size: 1rem;
-  color: #444;
+  color: #222 !important;
   font-weight: 500;
 }
 .tipo-total {
   font-size: 1rem;
-  color: #2563eb;
+  color: #222 !important;
   font-weight: 700;
 }
 </style>

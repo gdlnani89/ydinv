@@ -1,63 +1,63 @@
 <template>
     <div class="fundo-modal">
-        <div class="card">
-            <h5 class="card-title">{{ modoEdicao ? 'Editar Despesa' : 'Cadastrar Despesa' }}</h5>
+        <div class="card-modal">
+            <h5 class="card-title mb-1">{{ modoEdicao ? 'Editar Despesa' : 'Cadastrar Despesa' }}</h5>
             
-            <!-- Mostra o período selecionado -->
-            <div v-if="periodo" class="periodo-info mb-3">
+            <div v-if="periodo" class="periodo-info">
                 <small class="text-muted">
                     <i class="bi bi-calendar-event me-1"></i>
                     Período: {{ formatarPeriodo(periodo) }}
                 </small>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Descrição</label>
-                <input
-                    v-model="descricao"
-                    type="text"
-                    class="form-control"
-                    placeholder="Ex: Conta de luz, Aluguel..."
-                >
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Tipo</label>
-                <select class="form-control" v-model="tipo">
-                    <option v-for="t in tipos" :key="t" :value="t">{{ t }}</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Valor</label>
-                <input 
-                    type="text"
-                    class="form-control"
-                    v-model="valor"
-                    placeholder="0,00"
-                    @input="formatarComoMoeda"
+            <div class="overflow-auto" style="max-height: 60vh;">
+                <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <input
+                        v-model="descricao"
+                        type="text"
+                        class="form-control"
+                        placeholder="Ex: Conta de luz, Aluguel..."
                     >
+                </div>
+    
+                <div class="mb-3">
+                    <label class="form-label">Tipo</label>
+                    <select class="form-control" v-model="tipo">
+                        <option v-for="t in tipos" :key="t" :value="t">{{ t }}</option>
+                    </select>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="" class="form-label">Valor</label>
+                    <input 
+                        type="text"
+                        class="form-control"
+                        v-model="valor"
+                        placeholder="0,00"
+                        @input="formatarComoMoeda"
+                        >
+                </div>
+    
+                <div class="mb-3">
+                    <label for="" class="form-label">Dia</label>
+                    <input 
+                        type="text"
+                        class="form-control"
+                        v-model="dia"
+                        >
+                </div>
+    
+                <div class="mb-3">
+                    <label for="" class="form-label">Conta</label>
+                    <select 
+                        class="form-control"
+                        v-model="conta"
+                        >
+                        <option v-for="conta in contas" :key="conta.id" :value="conta.id">{{ conta.nome }}</option>
+                    </select>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Dia</label>
-                <input 
-                    type="text"
-                    class="form-control"
-                    v-model="dia"
-                    >
-            </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Conta</label>
-                <select 
-                    class="form-control"
-                    v-model="conta"
-                    >
-                    <option v-for="conta in contas" :key="conta.id" :value="conta.id">{{ conta.nome }}</option>
-                </select>
-            </div>
-            <div class="d-flex justify-content-between w-100">
+            <div class="d-flex justify-content-between w-100 border-top pt-3">
                 <button class="btn btn-primary" @click="salvarDespesa">
                     {{ modoEdicao ? 'Atualizar' : 'Adicionar' }}
                 </button>
@@ -77,6 +77,7 @@ export default {
         return{
             descricao:'',
             tipos: [
+                'Familia',
                 'Investimentos',
                 'Mercado',
                 'Bobagens',
@@ -90,7 +91,7 @@ export default {
                 'Viagem',
                 'Outros'
             ],
-            tipo: 'Investimentos', // Valor inicial para o tipo
+            tipo: 'Mercado', // Valor inicial para o tipo
             valor:'',
             dia: new Date().getDate(),
             conta: '',
@@ -259,18 +260,6 @@ export default {
 </script>
 
 <style scoped>
-.fundo-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
 
 .card {
     background: white;
@@ -279,12 +268,6 @@ export default {
     max-width: 400px;
     width: 90%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.card-title {
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-weight: 600;
 }
 
 .form-label {
@@ -334,10 +317,4 @@ export default {
     background-color: #545b62;
 }
 
-.periodo-info {
-    background: #fff3cd;
-    border-radius: 6px;
-    padding: 0.5rem;
-    border-left: 3px solid #ffc107;
-}
 </style> 

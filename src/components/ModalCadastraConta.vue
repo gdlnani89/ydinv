@@ -2,7 +2,7 @@
   <div class="fundo-modal">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Cadastro de Conta</h5>
+        <h5 class="card-title heading-4">Cadastro de Conta</h5>
         
         <div class="mb-3">
           <label class="form-label">Nome do Banco</label>
@@ -91,18 +91,6 @@ export default {
 </script>
 
 <style scoped>
-.fundo-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
 
 .card {
   max-width: 400px;

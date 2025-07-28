@@ -94,7 +94,7 @@ export default{
     <div class="header-section">
       <div class="d-flex justify-content-between align-items-start">
         <Cabecalho titulo="Investimentos" descricao="Acompanhe suas aplicações financeiras." />
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center me-2">
           <button 
             @click="toggleBalancePrivacy"
             class="btn btn-sm btn-outline-secondary"
@@ -106,7 +106,7 @@ export default{
       </div>
 
       <!-- Resumo dos Investimentos -->
-      <div class="d-flex align-items-center header-investimentos">
+      <div class="d-flex align-items-center justify-content-between header-investimentos px-3">
         <div class="col-md-2">
           <div class="card summary-card">
             <div class="summary-icon bg-primary-light">
@@ -258,13 +258,6 @@ export default{
   overflow: hidden;
 }
 
-.header-section {
-  position: relative;
-  flex-shrink: 0;
-  padding: 0 0.75rem;
-  background: white;
-  border-bottom: 1px solid #e9ecef;
-}
 .header-investimentos {
   position: relative;
   overflow-x: auto;

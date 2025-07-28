@@ -143,22 +143,6 @@ export default {
     </div>
     <Periodo v-model="periodoSelecionado" @periodo-selecionado="atualizarPeriodo" />
 
-    <!-- Saldo Atual -->
-    <!-- <div class="saldo-card mb-4 p-3 rounded shadow-sm bg-white">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h6 class="text-muted mb-1">Saldo Atual</h6>
-          <h4 class="mb-0" :class="saldoAtual >= 0 ? 'text-success' : 'text-danger'">
-            {{ formatCurrency(saldoAtual, true) }}
-          </h4>
-        </div>
-        <div class="text-end">
-          <small class="text-muted">Período: {{ periodoSelecionado || 'Todos' }}</small><br>
-          <small class="text-muted">Conta: {{ contaSelecionada ? getNomeConta(contaSelecionada) : 'Todas' }}</small>
-        </div>
-      </div>
-    </div> -->
-
     <!-- Lista de Lançamentos -->
     <div class="extrato-lista">
       <div v-if="saldoAcumulado.length === 0" class="text-center py-5">
@@ -167,7 +151,7 @@ export default {
       </div>
       
       <div v-else v-for="item in saldoAcumulado" :key="`${item.tipo}-${item.id}`" 
-           class="lancamento-item d-flex justify-content-between align-items-center p-3 mb-2 rounded shadow-sm bg-white">
+           class="lancamento-item d-flex justify-content-between align-items-center p-3 mb-2 rounded shadow-sm">
         <div class="d-flex align-items-center gap-3">
           <!-- Ícone do tipo -->
           <div class="tipo-icon" :class="item.tipo === 'receita' ? 'bg-success' : 'bg-danger'">
@@ -196,9 +180,13 @@ export default {
   </section>
 </template>
 <style>
-    .tipo-icon{
-        border-radius: 50%;
-        padding: 10px;
-        color: white;
-    }
+  .tipo-icon{
+      border-radius: 50%;
+      padding: 10px;
+      color: white;
+  }
+  .lancamento-item {
+      background-color: var(--card-bg) !important;
+      color: var(--text-primary) !important;
+  }
 </style>

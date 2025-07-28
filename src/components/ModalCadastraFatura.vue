@@ -1,96 +1,98 @@
 <template>
     <div class="fundo-modal">
-        <div class="card">
-            <h5 class="card-title">{{ modoEdicao ? 'Editar Fatura' : 'Cadastrar Fatura' }}</h5>
-            
-            <!-- Mostra o período selecionado -->
-            <div v-if="periodo" class="periodo-info mb-3">
+        <div class="card-modal">
+            <h5 class="card-title mb-1">{{ modoEdicao ? 'Editar Gasto' : 'Cadastrar Gasto' }}</h5>
+            <div v-if="periodo" class="periodo-info">
                 <small class="text-muted">
                     <i class="bi bi-calendar-event me-1"></i>
                     Período: {{ formatarPeriodo(periodo) }}
                 </small>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Descrição</label>
-                <input
-                    v-model="descricao"
-                    type="text"
-                    class="form-control"
-                    placeholder="Ex: Fatura de janeiro, Compras..."
-                >
-            </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Valor Total da Compra</label>
-                <input 
-                    type="text"
-                    class="form-control"
-                    v-model="valor"
-                    placeholder="0,00"
-                    @input="formatarComoMoeda"
+            <div class="overflow-auto" style="max-height: 60vh;">
+                <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <input
+                        v-model="descricao"
+                        type="text"
+                        class="form-control"
+                        placeholder="Ex: Fatura de janeiro, Compras..."
                     >
-            </div>
+                </div>
 
-            <div class="row">
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label class="form-label">Número de Parcelas</label>
-                        <select 
-                            class="form-control"
-                            v-model="numeroParcelas"
-                            @change="calcularValorParcela"
-                            >
-                            <option value="1">1x</option>
-                            <option value="2">2x</option>
-                            <option value="3">3x</option>
-                            <option value="4">4x</option>
-                            <option value="5">5x</option>
-                            <option value="6">6x</option>
-                            <option value="7">7x</option>
-                            <option value="8">8x</option>
-                            <option value="9">9x</option>
-                            <option value="10">10x</option>
-                            <option value="11">11x</option>
-                            <option value="12">12x</option>
-                        </select>
+                <div class="mb-3">
+                    <label for="" class="form-label">Valor Total da Compra</label>
+                    <input 
+                        type="text"
+                        class="form-control"
+                        v-model="valor"
+                        placeholder="0,00"
+                        @input="formatarComoMoeda"
+                        >
+                </div>
+    
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="col-6">
+                        <div >
+                            <label class="form-label">Número <br>de Parcelas</label>
+                            <select 
+                                class="form-control"
+                                v-model="numeroParcelas"
+                                @change="calcularValorParcela"
+                                >
+                                <option value="1">1x</option>
+                                <option value="2">2x</option>
+                                <option value="3">3x</option>
+                                <option value="4">4x</option>
+                                <option value="5">5x</option>
+                                <option value="6">6x</option>
+                                <option value="7">7x</option>
+                                <option value="8">8x</option>
+                                <option value="9">9x</option>
+                                <option value="10">10x</option>
+                                <option value="11">11x</option>
+                                <option value="12">12x</option>
+                                <option value="">Mais</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div >
+                            <label class="form-label">Valor <br>Parcela</label>
+                            <input 
+                                type="text"
+                                class="form-control"
+                                v-model="valorParcela"
+                                readonly
+                                placeholder="0,00"
+                                >
+                        </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label class="form-label">Valor da Parcela</label>
-                        <input 
-                            type="text"
-                            class="form-control"
-                            v-model="valorParcela"
-                            readonly
-                            placeholder="0,00"
-                            >
-                    </div>
+    
+                <div class="mb-3">
+                    <label for="" class="form-label">Data da Compra</label>
+                    <input 
+                        type="date"
+                        class="form-control"
+                        v-model="dataVencimento"
+                        >
+                </div>
+    
+                <div class="mb-3">
+                    <label for="" class="form-label">Cartão</label>
+                    <select 
+                        class="form-control"
+                        v-model="cartaoId"
+                        >
+                        <option value="">Selecione um cartão</option>
+                        <option v-for="cartao in cartoes" :key="cartao.id" :value="cartao.id">
+                            {{ cartao.nome }} - {{ cartao.banco }}
+                        </option>
+                    </select>
                 </div>
             </div>
 
-            <div class="mb-3">
-                <label for="" class="form-label">Data de Vencimento</label>
-                <input 
-                    type="date"
-                    class="form-control"
-                    v-model="dataVencimento"
-                    >
-            </div>
 
-            <div class="mb-3">
-                <label for="" class="form-label">Cartão</label>
-                <select 
-                    class="form-control"
-                    v-model="cartaoId"
-                    >
-                    <option value="">Selecione um cartão</option>
-                    <option v-for="cartao in cartoes" :key="cartao.id" :value="cartao.id">
-                        {{ cartao.nome }} - {{ cartao.banco }}
-                    </option>
-                </select>
-            </div>
             <div class="d-flex justify-content-between w-100">
                 <button class="btn btn-primary" @click="salvarFatura">
                     {{ modoEdicao ? 'Atualizar' : 'Adicionar' }}
@@ -322,18 +324,7 @@ export default {
 </script>
 
 <style scoped>
-.fundo-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
+
 
 .card {
     background: white;
@@ -342,18 +333,6 @@ export default {
     max-width: 400px;
     width: 90%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.card-title {
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-weight: 600;
-}
-
-.form-label {
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 0.5rem;
 }
 
 .form-control {
@@ -397,10 +376,4 @@ export default {
     background-color: #545b62;
 }
 
-.periodo-info {
-    background: #fff3cd;
-    border-radius: 6px;
-    padding: 0.5rem;
-    border-left: 3px solid #ffc107;
-}
 </style> 

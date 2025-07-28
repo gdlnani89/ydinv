@@ -2,7 +2,7 @@
     <div class="fundo-modal">
         <div class="card-modal">
             <h5 class="card-title">{{ modoEdicao ? 'Editar Investimento' : 'Cadastrar Investimento' }}</h5>
-            <div class="overflow-auto" style="max-height: 80vh;">
+            <div class="overflow-auto" style="max-height: 60vh;">
                 <div class="mb-3">
                     <label class="form-label">Nome do Investimento</label>
                     <input
@@ -31,6 +31,17 @@
                         <option value="Outros">Outros</option>
                     </select>
                 </div>
+
+                <div v-if="tipo === 'Ações'" class="mb-3">
+                    <label class="form-label">Quantidade</label>
+                    <input 
+                        type="number"
+                        class="form-control"
+                        v-model="quantidade"
+                        placeholder="Ex: 1000"
+                        min="1"
+                        >
+                </div>
     
                 <div class="mb-3">
                     <label class="form-label">Banco/Instituição</label>
@@ -47,7 +58,7 @@
                 </div>
     
                 
-                <div class="d-flex align-items-center justify-content-between mb-">
+                <div class="d-flex align-items-center justify-content-between">
                     <div class="mb-3">
                         <label class="form-label">Valor <br>Inicial</label>
                         <input 
@@ -71,7 +82,7 @@
                 </div>
     
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                    <div class="mb-3">
+                    <div class="">
                         <label class="form-label">Data de <br>Aplicação</label>
                         <input 
                             type="date"
@@ -79,7 +90,7 @@
                             v-model="dataAplicacao"
                             >
                     </div>
-                    <div class="mb-3">
+                    <div class="">
                         <label class="form-label">Data de <br>Vencimento</label>
                         <input 
                             type="date"
@@ -99,12 +110,12 @@
                     ></textarea>
                 </div>
     
-                <div class="d-flex justify-content-between w-100">
-                    <button class="btn btn-primary" @click="salvarInvestimento">
-                        {{ modoEdicao ? 'Atualizar' : 'Adicionar' }}
-                    </button>
-                    <button @click="fecharModal" class="btn btn-secondary">Fechar</button>
-                </div>
+            </div>
+            <div class="d-flex justify-content-between w-100 border-top pt-3">
+                <button class="btn btn-primary" @click="salvarInvestimento">
+                    {{ modoEdicao ? 'Atualizar' : 'Adicionar' }}
+                </button>
+                <button @click="fecharModal" class="btn btn-secondary">Fechar</button>
             </div>
         </div>
     </div>
@@ -120,6 +131,7 @@ export default {
         return{
             nome: '',
             tipo: '',
+            quantidade: null,
             valorInicial: '',
             valorAtual: '',
             dataAplicacao: '',
@@ -198,6 +210,7 @@ export default {
                 id: this.modoEdicao ? this.investimentoEditando.id : Date.now(),
                 nome: this.nome.trim(),
                 tipo: this.tipo,
+                quantidade: this.quantidade || 1,
                 valorInicial: valorInicial.toString(),
                 valorAtual: valorAtual.toString(),
                 dataAplicacao: this.dataAplicacao,
@@ -323,60 +336,14 @@ export default {
 </script>
 
 <style scoped>
-.fundo-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--modal-bg);
-    z-index: 1000;
-}
-
 .input-modal {
     max-width: 140px;
-}
-.card-modal {
-    background: var(--modal-content-bg);
-    border-radius: 12px;
-    padding: 1rem;
-    max-width: 500px;
-    width: 90%;
-    height: 90vh;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.card-title {
-    margin-bottom: .5rem;
-    color: var(--text-primary);
-    font-weight: 600;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.5rem;
 }
 
 .form-label {
     font-weight: 500;
     color: var(--text-primary);
     margin-bottom: 0.5rem;
-}
-
-.form-control {
-    border: 1px solid var(--input-border);
-    border-radius: 8px;
-    padding: 0.75rem;
-    font-size: 1rem;
-    background-color: var(--input-bg);
-    color: var(--text-primary);
-    transition: border-color 0.2s ease;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--input-focus-border);
-    box-shadow: var(--input-focus-shadow);
 }
 
 .btn {

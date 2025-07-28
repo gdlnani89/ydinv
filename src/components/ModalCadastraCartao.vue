@@ -3,7 +3,7 @@
         <div class="card">
             <h5 class="card-title">{{ modoEdicao ? 'Editar Cartão' : 'Cadastrar Cartão' }}</h5>
 
-            <div class="mb-3">
+            <div class="">
                 <label class="form-label">Nome do Cartão</label>
                 <input
                     v-model="nome"
@@ -15,18 +15,20 @@
 
             <div class="mb-3">
                 <label class="form-label">Banco</label>
-                <input
-                    v-model="banco"
-                    type="text"
-                    class="form-control"
-                    placeholder="Ex: Nubank, Itaú, Bradesco..."
-                >
+               
+                <select v-model="banco" class="form-control">
+                    <option value="" disabled selected>Selecione um banco</option>
+                    <option v-for="conta in contas" :key="conta.id" :value="conta.banco">
+                        {{ conta.banco }}
+                    </option>
+                </select>
+                <div v-if="!contas || contas.length === 0" class="text-danger mt-1" style="font-size:0.95rem;">Nenhuma conta disponível. Cadastre uma conta no dashboard.</div>
             </div>
 
-            <div class="row">
+            <div class="d-flex justify-content-between align-items-center">
                 <div class="col-6">
                     <div class="mb-3">
-                        <label class="form-label">Dia de Corte</label>
+                        <label class="form-label">Dia <br>de Corte</label>
                         <input 
                             type="number"
                             class="form-control"
@@ -39,7 +41,7 @@
                 </div>
                 <div class="col-6">
                     <div class="mb-3">
-                        <label class="form-label">Dia de Vencimento</label>
+                        <label class="form-label">Dia de <br>Vencimento</label>
                         <input 
                             type="number"
                             class="form-control"
@@ -84,6 +86,7 @@ export default {
         return {
             nome: '',
             banco: '',
+            contas: JSON.parse(localStorage.getItem('contas')) || [],
             diaCorte: '',
             diaVencimento: '',
             corSelecionada: '#007bff',
@@ -148,7 +151,7 @@ export default {
             const cartao = {
                 id: this.modoEdicao ? this.cartaoEditando.id : Date.now(),
                 nome: this.nome.trim(),
-                banco: this.banco.trim(),
+                banco: this.bancos,
                 diaCorte: parseInt(this.diaCorte),
                 diaVencimento: parseInt(this.diaVencimento),
                 cor: this.corSelecionada
@@ -199,7 +202,12 @@ export default {
             this.corSelecionada = '#007bff';
             this.modoEdicao = false;
             this.cartaoEditando = null;
-        }
+        },
+        onBancoChange() {
+            if (this.banco !== 'Outros') {
+                this.bancoOutros = '';
+            }
+        },
     }
 }
 </script>
@@ -225,12 +233,6 @@ export default {
     max-width: 500px;
     width: 90%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.card-title {
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-weight: 600;
 }
 
 .form-label {

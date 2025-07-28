@@ -33,7 +33,7 @@ function showSection(section) {
     border-top: 1px solid var(--border-color);
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
     z-index: 100;
-    background-color: var(--card-bg);
+    background-color: var(--card-bg)!important;
 }
 
 .bottom-nav .nav-link {
