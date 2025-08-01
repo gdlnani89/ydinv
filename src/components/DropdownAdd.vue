@@ -3,7 +3,7 @@
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi bi-three-dots-vertical"></i>
         </button>
-        <ul class="dropdown-menu">
+        <ul id="dropdown-menu" class="dropdown-menu">
           <li><a class="dropdown-item" @click="abrirmodal">Adicionar Conta</a></li>
           <li><a class="dropdown-item" @click="gerenciarContas">Gerenciar Contas</a></li>
           <li><hr class="dropdown-divider"></li>
@@ -32,8 +32,9 @@ export default {
 }
 </script>
 
-<style>
-.add{
+<style scoped>
+#dropdown-menu{
     margin-right: 10px;
+    background-color: var(--card-bg)!important;
 }
 </style>

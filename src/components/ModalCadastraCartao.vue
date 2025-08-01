@@ -18,11 +18,23 @@
                
                 <select v-model="banco" class="form-control">
                     <option value="" disabled selected>Selecione um banco</option>
-                    <option v-for="conta in contas" :key="conta.id" :value="conta.banco">
-                        {{ conta.banco }}
+                    <option v-for="conta in contas" :key="conta.id" :value="conta.nome">
+                        {{ conta.nome }}
                     </option>
+                    <option value="Outros">Outro</option>
                 </select>
                 <div v-if="!contas || contas.length === 0" class="text-danger mt-1" style="font-size:0.95rem;">Nenhuma conta disponível. Cadastre uma conta no dashboard.</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Limite</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    v-model="limite" 
+                    placeholder="5000,00"
+                >
+
             </div>
 
             <div class="d-flex justify-content-between align-items-center">
@@ -80,12 +92,14 @@
 </template>
 
 <script>
+
 export default {
     props: ['cartao'],
     data() {
         return {
             nome: '',
             banco: '',
+            limite: '',
             contas: JSON.parse(localStorage.getItem('contas')) || [],
             diaCorte: '',
             diaVencimento: '',
@@ -119,6 +133,10 @@ export default {
             },
             immediate: true
         }
+    },
+    mounted() {
+        console.log(this.contas);
+        
     },
     methods: {
         selecionarCor(cor) {

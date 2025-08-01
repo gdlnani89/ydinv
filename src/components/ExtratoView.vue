@@ -165,7 +165,7 @@ export default {
                 {{ getNomeConta(item.contaId) }}
               </span>
             </div>
-            <small class="text-muted">{{ item.dataFormatada }}</small>
+            <small class="text-muted tx-color">{{ item.dataFormatada }}</small>
           </div>
         </div>
         <!-- Valor e saldo -->
@@ -173,13 +173,13 @@ export default {
           <div class="valor-lancamento" :class="item.tipo === 'receita' ? 'text-success' : 'text-danger'">
             <strong>{{ item.tipo === 'receita' ? '+' : '-' }}{{ formatCurrency(Math.abs(item.valorNumerico), true) }}</strong>
           </div>
-          <small class="text-muted">Saldo: {{ formatCurrency(item.saldoAcumulado, true) }}</small>
+          <small class="text-muted tx-color">Saldo: {{ formatCurrency(item.saldoAcumulado, true) }}</small>
         </div>
       </div>
     </div>
   </section>
 </template>
-<style>
+<style scoped>
   .tipo-icon{
       border-radius: 50%;
       padding: 10px;
@@ -188,5 +188,11 @@ export default {
   .lancamento-item {
       background-color: var(--card-bg) !important;
       color: var(--text-primary) !important;
+  }
+  .filtro-conta{
+    background-color: var(--card-bg) !important;
+  }
+  .tx-color{
+    color: var(--text-primary) !important;
   }
 </style>

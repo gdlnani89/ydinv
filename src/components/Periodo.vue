@@ -121,6 +121,7 @@ input[type="month"] {
   border-radius: 0.375rem;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
+  background-color: var(--card-bg);
 }
 
 input[type="month"]:focus {

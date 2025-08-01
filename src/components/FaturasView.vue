@@ -313,8 +313,8 @@ export default{
 .header-section {
   flex-shrink: 0;
   padding: 0.75rem;
-  background: white;
-  border-bottom: 1px solid #e9ecef;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .scrollable-content {
@@ -331,7 +331,7 @@ export default{
 }
 
 .cartao-card {
-  background: white;
+  background-color: var(--card-bg);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);

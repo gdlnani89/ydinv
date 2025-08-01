@@ -20,6 +20,7 @@ export default{
     return{
       modalInvestimento: false,
       investimentoEmEdicao: null,
+      novoValorAtual: null,
     }
   },
   components:{
@@ -28,6 +29,13 @@ export default{
     ModalCadastraInvestimento,
   },
   methods: {
+    editarValorAtual(index){
+      let i = []
+      this.inves
+    },
+    atualizaValorAtual(investimento) {
+      this.investimentoEmEdicao = investimento;
+    },
     abrirModalInvestimento(){
       this.modalInvestimento = true;
     },
@@ -160,6 +168,7 @@ export default{
             <h5 class="investimento-nome">{{ investimento.nome }}</h5>
             <span class="investimento-tipo">{{ investimento.tipo }}</span>
           </div>
+
           <div class="investimento-acoes">
             <button 
               class="btn btn-sm btn-outline-primary"
@@ -178,15 +187,29 @@ export default{
           </div>
         </div>
 
+        <div v-show="investimento.quantidade > 1" class="info-row">
+          <div class="info-item">
+            <span class="info-label">Quantidade:</span>
+            <span class="info-value">{{ investimento.quantidade }}</span>
+          </div>
+        </div>
+
         <div class="investimento-info">
           <div class="info-row">
             <div class="info-item">
               <span class="info-label">Valor Inicial:</span>
-              <span class="info-value">{{ formatBalanceWithPrivacy(investimento.valorInicial) }}</span>
+              <span class="info-value">{{ formatBalanceWithPrivacy(investimento.valorInicial) || investimento.quantidade > 1 ? formatBalanceWithPrivacy(investimento.valorInicial * investimento.quantidade) : ''}}</span>
             </div>
             <div class="info-item">
               <span class="info-label">Valor Atual:</span>
-              <span class="info-value">{{ formatBalanceWithPrivacy(investimento.valorAtual) }}</span>
+              <div>
+                <span class="info-value">{{ formatBalanceWithPrivacy(investimento.valorAtual) }}</span>
+                <input v-if="atualizarInvestimento" type="text" class="form-control form-control-sm mt-2" placeholder="Filtrar por nome ou tipo"  />
+                <button class="btn" onclick="atualizarInvestimento = !atualizarInvestimento" title="Atualizar valores">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+              </div>
+
             </div>
           </div>
           
@@ -250,14 +273,6 @@ export default{
 </template>
 
 <style scoped>
-.content-section {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-}
-
 .header-investimentos {
   position: relative;
   overflow-x: auto;
