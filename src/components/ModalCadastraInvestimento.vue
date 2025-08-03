@@ -9,7 +9,7 @@
                         v-model="nome"
                         type="text"
                         class="form-control"
-                        placeholder="Ex: CDB Banco X, Ações Petrobras..."
+                        placeholder="Ex: CDB Banco X, BBas3, etc..."
                     >
                 </div>
     
@@ -68,6 +68,7 @@
                             placeholder="0,00"
                             @input="formatarComoMoedaInicial"
                             >
+                        
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Valor <br>Atual</label>
@@ -262,17 +263,6 @@ export default {
                 this.bancoOutros = '';
             }
             
-            console.log('Formulário preenchido:', {
-                nome: this.nome,
-                tipo: this.tipo,
-                valorInicial: this.valorInicial,
-                valorAtual: this.valorAtual,
-                dataAplicacao: this.dataAplicacao,
-                dataVencimento: this.dataVencimento,
-                observacoes: this.observacoes,
-                banco: this.banco,
-                bancoOutros: this.bancoOutros
-            });
         },
         
         resetarFormulario() {

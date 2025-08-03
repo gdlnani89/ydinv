@@ -138,9 +138,9 @@ export default{
 <template>
   <section class="content-section" id="despesas">
     <!-- Área fixa do topo -->
-    <div class="header-section">
-      <div class="d-flex justify-content-between align-items-start">
-        <h3 class="titulo-section">Despesas</h3>
+    <div class="pb-2 bx-shadow sticky-top bg-white">
+      <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow mb-3">
+        <h4>Despesas</h4>
         <div class="d-flex align-items-center gap-2">
           <button 
             @click="toggleBalancePrivacy"
@@ -152,7 +152,8 @@ export default{
         </div>
       </div>
       <Periodo v-model="periodoSelecionado" @periodo-change="atualizarPeriodo" />
-      <TotalCard 
+      <TotalCard
+        class="m-3" 
         titulo="Total de Despesas"
         :valor="totalDespesas"
         :contador="despesasFiltradas.length"
@@ -277,12 +278,6 @@ export default{
 </template>
 
 <style scoped>
-.content-section {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-}
 
 .header-section {
   flex-shrink: 0;

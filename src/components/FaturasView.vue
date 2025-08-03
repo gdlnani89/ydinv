@@ -149,9 +149,9 @@ export default{
 <template>
   <section class="content-section" id="faturas">
     <!-- Área fixa do topo -->
-    <div class="header-section">
-      <div class="d-flex justify-content-between align-items-start">
-        <h3 class="titulo-section">Faturas</h3>
+    <div class="pb-2 bx-shadow sticky-top bg-white">
+      <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow mb-3">
+        <h4>Faturas</h4>
         <div class="d-flex align-items-center gap-2">
           <button 
             @click="toggleBalancePrivacy"
@@ -164,14 +164,13 @@ export default{
       </div>
       <Periodo @periodo-change="atualizarPeriodo" />
       <TotalCard 
+        class="m-3"
         titulo="Total de Faturas"
         :valor="totalFaturas"
         :contador="faturasFiltradas.length"
         itemLabel="fatura"
         tipo="faturas"
       />
-      
-
     </div>
     
     <!-- Área rolável dos cartões -->
@@ -303,26 +302,6 @@ export default{
 </template>
 
 <style scoped>
-.content-section {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.header-section {
-  flex-shrink: 0;
-  padding: 0.75rem;
-  background-color: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.scrollable-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem;
-}
-
 .cartoes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

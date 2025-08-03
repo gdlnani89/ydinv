@@ -1,10 +1,10 @@
 <template>
     <div class="fundo-modal">
-        <div class="card">
-            <h5 class="card-title">{{ modoEdicao ? 'Editar Receita' : 'Cadastrar Receita' }}</h5>
+        <div class="card-modal">
+            <h5 class="card-title mb-1">{{ modoEdicao ? 'Editar Receita' : 'Cadastrar Receita' }}</h5>
             
             <!-- Mostra o período selecionado -->
-            <div v-if="periodo" class="periodo-info mb-3">
+            <div v-if="periodo" class="periodo-info">
                 <small class="text-muted">
                     <i class="bi bi-calendar-event me-1"></i>
                     Período: {{ formatarPeriodo(periodo) }}
@@ -50,7 +50,7 @@
                     <option v-for="conta in contas" :key="conta.id" :value="conta.id">{{ conta.nome }}</option>
                 </select>
             </div>
-            <div class="d-flex justify-content-between w-100">
+            <div class="d-flex justify-content-between w-100 border-top pt-3">
                 <button class="btn btn-primary" @click="salvarReceita">
                     {{ modoEdicao ? 'Atualizar' : 'Adicionar' }}
                 </button>
@@ -238,10 +238,4 @@ export default {
 </script>
 
 <style scoped>
-.periodo-info {
-    background: #e3f2fd;
-    border-radius: 6px;
-    padding: 0.5rem;
-    border-left: 3px solid #2196f3;
-}
 </style>
