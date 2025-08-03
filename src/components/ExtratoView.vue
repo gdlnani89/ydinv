@@ -128,10 +128,10 @@ export default {
 </script>
 
 <template>
-  <section class="controles-section">
+  <section class="content-section">
     <!-- Cabeçalho -->
-    <div class="d-flex justify-content-between align-items-center m-2">
-      <h3 class="titulo-section">Extrato</h3>
+    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow mb-3">
+      <h4>Extrato</h4>
       <div class="filtros-container">
         <select v-model="contaSelecionada" class="form-select form-select-sm filtro-conta">
           <option value="">Todas as contas</option>
@@ -139,7 +139,7 @@ export default {
             {{ conta.nome }}
           </option>
         </select>
-        </div>
+      </div>
     </div>
     <Periodo v-model="periodoSelecionado" @periodo-selecionado="atualizarPeriodo" />
 

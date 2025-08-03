@@ -132,23 +132,24 @@ export default{
 <template>
   <section class="content-section" id="receitas">
     <!-- Área fixa do topo -->
-    <div class="header-section">
-    <div class="d-flex justify-content-between align-items-start">
-        <h3 class="titulo-section">Receitas</h3>
-        <div class="d-flex align-items-center gap-2">
-          <button 
-          @click="toggleBalancePrivacy"
-          class="btn btn-sm btn-outline-secondary"
-          :title="isBalanceHidden ? 'Mostrar saldos' : 'Ocultar saldos'"
-          >
-          <i :class="['bi', isBalanceHidden ? 'bi-eye-fill' : 'bi-eye-slash-fill']"></i>
-        </button>
+    <div class="pb-2 bx-shadow">
+      <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow mb-3">
+          <h4>Receitas</h4>
+          <div class="d-flex align-items-center gap-2">
+            <button 
+              @click="toggleBalancePrivacy"
+              class="btn btn-sm btn-outline-secondary"
+              :title="isBalanceHidden ? 'Mostrar saldos' : 'Ocultar saldos'"
+              >
+              <i :class="['bi', isBalanceHidden ? 'bi-eye-fill' : 'bi-eye-slash-fill']"></i>
+            </button>
+        </div>
       </div>
-    </div>
-    <Periodo v-model="periodoSelecionado" @periodo-selecionado="atualizarPeriodo" />
+      <Periodo v-model="periodoSelecionado" @periodo-selecionado="atualizarPeriodo" />
       
       <!-- Total de receitas -->
       <TotalCard 
+        class="m-3"
         titulo="Total de Receitas"
         :valor="totalReceitas"
         :contador="receitasFiltradas.length"
@@ -266,25 +267,25 @@ export default{
 </template>
 
 <style scoped>
-.content-section {
+/* .content-section {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-}
+} */
 
-.header-section {
+/* .header-section {
   flex-shrink: 0;
   padding: 0.75rem;
   background: white;
   border-bottom: 1px solid #e9ecef;
-}
-
+} */
+/* 
 .scrollable-content {
   flex: 1;
   overflow-y: auto;
   padding: 1rem;
-}
+} */
 
 .contas-grid {
   display: grid;
