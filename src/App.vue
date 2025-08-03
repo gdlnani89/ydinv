@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, provide } from 'vue';
 import { initializeTheme } from './utils/themeManager.js';
 import TheSideBar from './components/TheSideBar.vue';
 import TheBottomNav from './components/TheBottomNav.vue';
@@ -124,6 +124,8 @@ function excluirFatura(faturaId){
 }
 
 function atualizarInvestimento(investimentoAtualizado){
+  console.log('investimentoAtualizado:', investimentoAtualizado);
+  
   const index = investimentos.value.findIndex(inv => inv.id === investimentoAtualizado.id)
   if (index !== -1) {
     investimentos.value[index] = investimentoAtualizado
@@ -306,7 +308,24 @@ function abrirModalGerenciarCartoes() {
 function fecharModalGerenciarCartoes() {
   modalGerenciarCartoes.value = false
 }
+function formatarComoMoeda(e){
+  if (!e || !e.target) return;
 
+  // Remove tudo que não é número
+  let valorApenasDigitos = e.target.value.replace(/\D/g, '');
+
+  if (!valorApenasDigitos) {
+    e.target.value = '0,00';
+    return;
+  }
+
+  const valorNumerico = Number(valorApenasDigitos) / 100;
+
+  e.target.value = valorNumerico.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
 // Inicializa o tema quando o app carrega
 onMounted(() => {
   initializeTheme();
@@ -372,6 +391,8 @@ onMounted(() => {
         @adicionar-investimento="adicionarInvestimento"
         @editar-investimento="editarInvestimento"
         @excluir-investimento="excluirInvestimento"
+        @atualizar-investimento="atualizarInvestimento"
+        :formatar-como-moeda="formatarComoMoeda"
         v-if="currentSection === 'investimentos'" 
       />
       <DividasView 

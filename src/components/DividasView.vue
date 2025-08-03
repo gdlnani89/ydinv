@@ -16,7 +16,7 @@
       </div>
 
       <!-- Resumo das Dívidas -->
-      <div class="row mb-2">
+      <div class="d-flex align-items-center justify-content-between header-operacao px-3">
         <div class="col-md-4">
           <div class="card summary-card">
             <div class="summary-icon bg-danger-light">

@@ -46,3 +46,21 @@ export function parseCurrencyValue(formattedValue) {
   
   return parseFloat(cleanValue) || 0;
 } 
+
+export function formatarComoMoeda(valor) {
+            
+    // Remove tudo que não é número
+    let digitos = valor.replace(/\D/g, '');
+
+    if (!digitos) {
+        this.valorInicial = '0,00';
+        return;
+    }
+
+    const valorNumerico = Number(digitos) / 100;
+
+    return valorNumerico.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+}

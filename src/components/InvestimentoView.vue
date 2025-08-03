@@ -4,6 +4,7 @@ import BtnAdd from './BtnAdd.vue';
 import ModalCadastraInvestimento from './ModalCadastraInvestimento.vue';
 import { useBalancePrivacy } from '../composables/useBalancePrivacy.js';
 import currencyMixin from '../mixins/currencyMixin.js';
+import { formatarComoMoeda } from '../utils/formatters.js';
 
 export default{
   mixins: [currencyMixin],
@@ -15,12 +16,26 @@ export default{
       formatBalanceWithPrivacy
     };
   },
-  props: ['investimentos'],
+  props: {
+    investimentos: {
+      type: Array,
+      required: true
+    }
+  },
   data(){
     return{
       modalInvestimento: false,
-      investimentoEmEdicao: null,
+      edCampoValorInicial: null,
+      edCampoValorAtual: null,
+      edCampoQtdAtual: null,
+      edCampoDtAplicacao: null,
+      edCampoDtVencimento: null,
+      novaDtAplicacao: null,
+      novaDtVencimento: null,
+      novoQtdAtual: null,
       novoValorAtual: null,
+      novoValorInicial: null,
+      investimentoEmEdicao: null,
     }
   },
   components:{
@@ -29,12 +44,62 @@ export default{
     ModalCadastraInvestimento,
   },
   methods: {
-    editarValorAtual(index){
-      let i = []
-      this.inves
+    atualizaValorAtual(investimento, campoValor) {
+      console.log(investimento.id);
+      if(campoValor === 'valorInicial') {
+        this.edCampoValorInicial = investimento.id;
+        this.novoValorInicial = investimento.valorInicial;
+      } else {
+        this.edCampoValorInicial = null;
+      }
+      if(campoValor === 'valorAtual') {
+        this.edCampoValorAtual = investimento.id;
+        this.novoValorAtual = investimento.valorAtual;
+      }else {
+        this.edCampoValorAtual = null;
+      }
+      if(campoValor === 'quantidade') {
+        this.edCampoQtdAtual = investimento.id;
+        this.novoQtdAtual = investimento.quantidade;
+      } else {
+        this.edCampoQtdAtual = null;
+      }
+      if(campoValor === 'dataAplicacao') {
+        this.edCampoDtAplicacao = investimento.id;
+        this.novaDtAplicacao = investimento.dataAplicacao;
+      } else {
+        this.edCampoDtAplicacao = null;
+      }
+      if(campoValor === 'dataVencimento') {
+        this.edCampoDtVencimento = investimento.id;
+        this.novaDtVencimento = investimento.dataVencimento;
+      } else {
+        this.edCampoDtVencimento = null;
+      }
     },
-    atualizaValorAtual(investimento) {
-      this.investimentoEmEdicao = investimento;
+    confirmarEdicao(investimento, campoValor) {
+      if(campoValor === 'valorInicial') {
+        investimento.valorInicial = this.novoValorInicial;
+        this.edCampoValorInicial = null;
+      }
+      if(campoValor === 'valorAtual') {
+        investimento.valorAtual = this.novoValorAtual;
+        this.edCampoValorAtual = null;
+      } 
+      if(campoValor === 'quantidade') {
+        investimento.quantidade = this.novoQtdAtual;
+        this.edCampoQtdAtual = null;
+      }
+      if(campoValor === 'dataAplicacao') {
+        investimento.dataAplicacao = this.novaDtAplicacao;
+        this.edCampoDtAplicacao = null;
+      }
+      if(campoValor === 'dataVencimento') {
+        investimento.dataVencimento = this.novaDtVencimento;
+        this.edCampoDtVencimento = null;
+      }
+      this.$emit('atualizar-investimento', investimento);
+
     },
     abrirModalInvestimento(){
       this.modalInvestimento = true;
@@ -75,17 +140,28 @@ export default{
       if (rentabilidade > 0) return 'bi-arrow-up-circle-fill';
       if (rentabilidade < 0) return 'bi-arrow-down-circle-fill';
       return 'bi-dash-circle-fill';
+    },
+    formatarMoeda(valor){
+      return formatarComoMoeda(valor);
     }
   },
   computed:{
     totalInvestido() {
       return this.investimentos.reduce((total, inv) => {
-        return total + parseFloat(inv.valorInicial || 0);
+        if(inv.quantidade > 1) {
+          return total + (parseFloat(inv.valorInicial || 0) * inv.quantidade);
+        }else {
+          return total + parseFloat(inv.valorInicial || 0);
+        }
       }, 0);
     },
     valorAtualTotal() {
       return this.investimentos.reduce((total, inv) => {
+        if(inv.quantidade > 1) {
+          return total + (parseFloat(inv.valorAtual || 0) * inv.quantidade);
+        }else {
         return total + parseFloat(inv.valorAtual || 0);
+        }
       }, 0);
     },
     rentabilidadeTotal() {
@@ -171,13 +247,6 @@ export default{
 
           <div class="investimento-acoes">
             <button 
-              class="btn btn-sm btn-outline-primary"
-              @click="editarInvestimento(investimento)"
-              title="Editar investimento"
-            >
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button 
               class="btn btn-sm btn-outline-danger"
               @click="excluirInvestimento(investimento)"
               title="Excluir investimento"
@@ -190,7 +259,21 @@ export default{
         <div v-show="investimento.quantidade > 1" class="info-row">
           <div class="info-item">
             <span class="info-label">Quantidade:</span>
-            <span class="info-value">{{ investimento.quantidade }}</span>
+            <div v-if="edCampoQtdAtual === investimento.id" class="info-value">
+              <input type="number" class="form-control" v-model="novoQtdAtual" placeholder="Quantidade" @input="edCampoQtdAtual = investimento.id">
+              <button class="btn" @click="confirmarEdicao(investimento, 'quantidade')">
+                <i class="bi bi-check-circle text-success"></i>
+              </button>
+              <button class="btn" @click="edCampoQtdAtual = null">
+                <i class="bi bi-x-circle text-danger"></i>
+              </button>
+            </div>
+            <div v-else class="info-value">
+              <span class="info-value me-2">{{ investimento.quantidade }}</span>
+              <button class="btn btn-pd1" @click="edCampoQtdAtual = investimento.id">
+                <i class="bi bi-arrow-clockwise"></i>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -198,18 +281,53 @@ export default{
           <div class="info-row">
             <div class="info-item">
               <span class="info-label">Valor Inicial:</span>
-              <span class="info-value">{{ formatBalanceWithPrivacy(investimento.valorInicial) || investimento.quantidade > 1 ? formatBalanceWithPrivacy(investimento.valorInicial * investimento.quantidade) : ''}}</span>
+              <div class="info-value" v-if="edCampoValorInicial === investimento.id">
+                <input class="form-control" type="text" name="" id="" v-model="novoValorInicial" @input="formatarMoeda(novoValorInicial)" placeholder="0,00">
+                <button class="btn" @click="confirmarEdicao(investimento, 'valorInicial')">
+                  <i class="bi bi-check-circle text-success"></i>
+                </button>
+                <button class="btn" @click="edCampoValorInicial = null">
+                  <i class="bi bi-x-circle text-danger"></i>
+                </button>
+              </div>
+              <div v-else class="info-value d-flex flex-column justify-content-between">
+                <div>
+                  <span class="info-value me-2">{{ formatBalanceWithPrivacy(investimento.valorInicial)}}</span>
+                  <button class="btn btn-pd1" @click="atualizaValorAtual(investimento, 'valorInicial')">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </div>
+                <div v-if="investimento.quantidade > 1" class="text-muted small">
+                  <span class="info-label">Total</span>
+                  {{ formatBalanceWithPrivacy(investimento.valorInicial * investimento.quantidade) }}
+
+                </div>
+
+              </div>
             </div>
             <div class="info-item">
               <span class="info-label">Valor Atual:</span>
-              <div>
-                <span class="info-value">{{ formatBalanceWithPrivacy(investimento.valorAtual) }}</span>
-                <input v-if="atualizarInvestimento" type="text" class="form-control form-control-sm mt-2" placeholder="Filtrar por nome ou tipo"  />
-                <button class="btn" onclick="atualizarInvestimento = !atualizarInvestimento" title="Atualizar valores">
-                  <i class="bi bi-arrow-clockwise"></i>
+              <div class="info-value" v-if="edCampoValorAtual === investimento.id">
+                <input type="text" class="form-control" v-model="novoValorAtual" @input="formatarMoeda(novoValorAtual)" placeholder="0,00">
+                <button class="btn" @click="confirmarEdicao(investimento, 'valorAtual')">
+                  <i class="bi bi-check-circle text-success"></i>
+                </button>
+                <button class="btn" @click="edCampoValorAtual = null">
+                  <i class="bi bi-x-circle text-danger"></i>
                 </button>
               </div>
-
+              <div v-else class="info-value d-flex flex-column justify-content-between">
+                <div>
+                  <span class="info-value me-2">{{ formatBalanceWithPrivacy(investimento.valorAtual) }}</span>
+                  <button class="btn btn-pd1" @click="atualizaValorAtual(investimento, 'valorAtual')">
+                    <i class="bi bi-arrow-clockwise"></i>
+                  </button>
+                </div>
+                <div v-if="investimento.quantidade > 1" class="text-muted small">
+                <span class="info-label">Total</span>
+                {{ formatBalanceWithPrivacy(investimento.valorAtual * investimento.quantidade) }}
+              </div>
+              </div>
             </div>
           </div>
           
@@ -220,14 +338,42 @@ export default{
             </div>
             <div class="info-item">
               <span class="info-label">Data de Aplicação:</span>
-              <span class="info-value">{{ formatarData(investimento.dataAplicacao) }}</span>
+              <div v-if="edCampoDtAplicacao === investimento.id" class="info-value">
+                <input type="date" class="form-control" v-model="novaDtAplicacao">
+                <button class="btn" @click="confirmarEdicao(investimento, 'dataAplicacao')">
+                  <i class="bi bi-check-circle text-success"></i>
+                  </button>
+                <button class="btn" @click="edCampoDtAplicacao = null">
+                  <i class="bi bi-x-circle text-danger"></i>
+                </button>
+              </div>
+              <div v-else class="info-value">
+                <span class="info-value me-2">{{ formatarData(investimento.dataAplicacao) }}</span> 
+                <button class="btn btn-pd1" @click="edCampoDtAplicacao = investimento.id">
+                  <i class="bi bi-pencil"></i>
+                </button>  
+              </div>
             </div>
           </div>
 
           <div class="info-row">
             <div class="info-item">
               <span class="info-label">Vencimento:</span>
-              <span class="info-value">{{ formatarData(investimento.dataVencimento) }}</span>
+              <div v-if="edCampoDtVencimento === investimento.id" class="info-value">
+                <input type="date" class="form-control" v-model="novaDtVencimento">
+                <button class="btn" @click="confirmarEdicao(investimento, 'dataVencimento')">
+                  <i class="bi bi-check-circle text-success"></i>
+                </button>
+                <button class="btn" @click="edCampoDtVencimento = null">
+                  <i class="bi bi-x-circle text-danger"></i>
+                </button>
+              </div>
+              <div v-else class="info-value">
+                <span class="info-value">{{ formatarData(investimento.dataVencimento) }}</span>
+                <button class="btn btn-pd1" @click="edCampoDtVencimento = investimento.id">
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </div>
             </div>
             <div class="info-item">
               <!-- Espaço reservado para futuras informações -->
@@ -278,11 +424,13 @@ export default{
   overflow-x: auto;
   white-space: nowrap;
   gap: 1rem;
+  box-shadow: var(--card-shadow);
 }
 .scrollable-content {
   flex: 1;
   overflow-y: auto;
   padding: 1rem;
+  height: 75vh;
 }
 
 .investimentos-grid {

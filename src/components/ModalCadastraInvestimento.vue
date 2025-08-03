@@ -313,24 +313,7 @@ export default {
                 maximumFractionDigits: 2,
             });
         },
-        formatarComoMoedaAtual(e) {
-            if (!e || !e.target) return;
-            
-            // Remove tudo que não é número
-            let valorApenasDigitos = e.target.value.replace(/\D/g, '');
-
-            if (!valorApenasDigitos) {
-                this.valorAtual = '0,00';
-                return;
-            }
-
-            const valorNumerico = Number(valorApenasDigitos) / 100;
-
-            this.valorAtual = valorNumerico.toLocaleString('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            });
-        }
+        
     },
 }
 </script>
