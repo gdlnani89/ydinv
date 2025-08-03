@@ -1,9 +1,9 @@
 <template>
   <section class="content-section" id="dividas">
     <!-- Área fixa do topo -->
-    <div class="header-section">
-      <div class="d-flex justify-content-between align-items-start">
-        <Cabecalho titulo="Dívidas" descricao="Controle suas dívidas e acompanhe o progresso de pagamento." />
+    <div class="bx-shadow">
+      <div class="d-flex justify-content-between align-items-center py-2 px-3">
+        <h4>Dívidas</h4>
         <div class="d-flex align-items-center gap-2">
           <button 
             @click="toggleBalancePrivacy"
@@ -343,24 +343,11 @@ export default{
 </script>
 
 <style scoped>
-.content-section {
-  display: flex;
-  flex-direction: column;
-  /* height: 100vh; */
-  overflow: hidden;
-}
-
 .header-section {
   flex-shrink: 0;
   padding: 0.75rem;
   background: white;
   border-bottom: 1px solid #e9ecef;
-}
-
-.scrollable-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem;
 }
 
 .dividas-grid {

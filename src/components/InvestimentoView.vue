@@ -175,10 +175,10 @@ export default{
 <template>
   <section class="content-section" id="investimentos">
     <!-- Área fixa do topo -->
-    <div class="header-section">
-      <div class="d-flex justify-content-between align-items-start">
-        <Cabecalho titulo="Investimentos" descricao="Acompanhe suas aplicações financeiras." />
-        <div class="d-flex align-items-center me-2">
+    <div class="bx-shadow">
+      <div class="d-flex justify-content-between align-items-center py-2 px-3">
+        <h4>Investimentos</h4>
+        <div class="d-flex align-items-center">
           <button 
             @click="toggleBalancePrivacy"
             class="btn btn-sm btn-outline-secondary"
@@ -190,7 +190,7 @@ export default{
       </div>
 
       <!-- Resumo dos Investimentos -->
-      <div class="d-flex align-items-center justify-content-between header-investimentos px-3">
+      <div class="d-flex align-items-center justify-content-between header-operacao px-3">
         <div class="col-md-2">
           <div class="card summary-card">
             <div class="summary-icon bg-primary-light">
@@ -419,19 +419,7 @@ export default{
 </template>
 
 <style scoped>
-.header-investimentos {
-  position: relative;
-  overflow-x: auto;
-  white-space: nowrap;
-  gap: 1rem;
-  box-shadow: var(--card-shadow);
-}
-.scrollable-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem;
-  height: 75vh;
-}
+
 
 .investimentos-grid {
   display: grid;

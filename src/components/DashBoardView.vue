@@ -225,7 +225,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 /* Layout responsivo e moderno para o dashboard */
 .content-section {

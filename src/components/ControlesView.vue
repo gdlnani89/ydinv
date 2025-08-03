@@ -260,9 +260,9 @@ export default{
 }
 </script>
 <template>
-  <section class="controles-section">
-    <div class="d-flex justify-content-between align-items-center m-2">
-      <h3 class="titulo-section">Controles</h3>
+  <section class="content-section">
+    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow">
+      <h4>Controles</h4>
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" @click="toggleDropdown" ref="dropdownButton">
           <i class="bi bi-three-dots-vertical"></i>
@@ -280,78 +280,79 @@ export default{
       <h5 class="text-muted">Clique no <i class="bi bi-three-dots-vertical"></i> e adicione.</h5>
     </div>
     <!-- Removido o formulário antigo aqui -->
-    <ul class="lista-controles">
-      <li v-for="(item) in listaControles" :key="item.id" class="controle-card mb-4 p-3 rounded shadow-sm bg-light.bg-gradient">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div class="d-flex align-items-center gap-2">
-            <strong class="controle-nome">{{ item.nome }}</strong>
-            <!-- <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
-              <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
-            </button> -->
-            <div v-if="item.descricao" class="text-muted small mt-1">{{ item.descricao }}</div>
+     <div class="scrollable-content d-flex flex-column align-items-center">
+
+         <div v-for="(item) in listaControles" :key="item.id" class="controle-card mb-4 p-3 rounded shadow-sm bg-light.bg-gradient w-100">
+           <div class="d-flex justify-content-between align-items-center mb-2">
+             <div class="d-flex align-items-center gap-2">
+               <strong class="controle-nome">{{ item.nome }}</strong>
+               <!-- <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
+                 <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+               </button> -->
+               <div v-if="item.descricao" class="text-muted small mt-1">{{ item.descricao }}</div>
+             </div>
+             <div class="d-flex align-items-center gap-2">
+               <button class="btn btn-primary btn-sm btn-add-lancamento" @click="abrirModalLancamento(item)">
+                 <i class="bi bi-plus-lg me-1"></i>Add
+               </button>
+               <div class="dropdown">
+                 <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" @click="toggleDropdownControle(item.id)">
+                   <i class="bi bi-gear"></i>
+                 </button>
+                 <ul class="dropdown-menu" :class="{ 'show': dropdownsAbertos[item.id] }">
+                   <li><a href="#" class="dropdown-item" @click="editarControle(item)"><i class="bi bi-pencil me-2"></i>{{ controlesEmEdicao[item.id] ? 'Sair da Edição' : 'Editar Lançamentos' }}</a></li>
+                   <li><a href="#" class="dropdown-item" @click="pagarTodosLancamentos(item)"><i class="bi bi-trash me-2"></i>Limpar Lançamentos</a></li>
+                 </ul>
+               </div>
+             </div>
+           </div>
+           <div class="soma-lancamentos mb-2 ms-1 d-flex align-items-center justify-content-between flex-column align-items-start">
+             <div class="d-flex align-items-center justify-content-between w-100">
+               <div class="d-flex flex-column">
+                 <span class="text-secondary small">
+                   Inicial: <strong>{{ formatCurrency(somaLancamentosPorControle[item.id] || 0, true) }}</strong>
+                 </span>
+                 <span class="text-secondary small mt-1">
+                   Restante: <strong>{{ formatCurrency((somaLancamentosPorControle[item.id] || 0) - (somaPagosPorControle[item.id] || 0), true) }}</strong>
+                 </span>
+               </div>
+               <span class="ms-3">Soma: <strong>{{ formatCurrency(somaSelecionadaPorControle[item.id] || 0, true) }}</strong></span>
+             </div>
+             <div class="w-100 d-flex align-items-center justify-content-between mt-1">
+               <span class="badge bg-secondary ms-2">{{ quantidadeLancamentosPorControle[item.id] }} lançamento<span v-if="quantidadeLancamentosPorControle[item.id] !== 1">s</span></span>
+               <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
+                 <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+                 </button>
+             </div>
+           </div>
+           <transition-group v-show="controlesExpandidos[item.id]" name="fade-move" tag="ul" class="lista-lancamentos mt-3">
+             <li v-for="l in lancamentosOrdenados(item.id)" :key="l.id + '-' + l.pago" class="lancamento-item d-flex align-items-center justify-content-between p-2 mb-2 rounded" :class="{ 'lancamento-pago': l.pago }">
+               <div>
+                 <div class="d-flex flex-column">
+                   <span class="lancamento-valor text-success fw-bold">{{ formatCurrency(l.valor, true) }}</span>
+                   <span class="lancamento-data text-muted">{{ formatarDataLancamento(l) }}</span>
+                 </div>
+                 <span class="lancamento-desc">{{ l.descricao }}</span>
+                 <span v-if="l.parcela" class="badge bg-info">Parcela {{ l.parcela }}</span>
+               </div>
+               <div class="d-flex align-items-center gap-2">
+                 <input type="checkbox" class="form-check-input me-1" :checked="l.pago" @change="marcarPago(l)">
+                 <span class="small">Pago</span>
+                 <input type="checkbox" class="form-check-input me-1" :checked="l.soma" @change="marcarSoma(l)">
+                 <span class="small">Soma</span>
+                 <div v-if="controlesEmEdicao[item.id]" class="d-flex gap-1">
+                   <button class="btn btn-sm btn-outline-primary" @click="abrirModalEditarLancamento(item, l)">
+                     <i class="bi bi-pencil"></i>
+                   </button>
+                   <button class="btn btn-sm btn-outline-danger" @click="excluirLancamento(l)">
+                     <i class="bi bi-trash"></i>
+                   </button>
+                 </div>
+               </div>
+             </li>
+           </transition-group>
           </div>
-          <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-primary btn-sm btn-add-lancamento" @click="abrirModalLancamento(item)">
-              <i class="bi bi-plus-lg me-1"></i>Add
-            </button>
-            <div class="dropdown">
-              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" @click="toggleDropdownControle(item.id)">
-                <i class="bi bi-gear"></i>
-              </button>
-              <ul class="dropdown-menu" :class="{ 'show': dropdownsAbertos[item.id] }">
-                <li><a href="#" class="dropdown-item" @click="editarControle(item)"><i class="bi bi-pencil me-2"></i>{{ controlesEmEdicao[item.id] ? 'Sair da Edição' : 'Editar Lançamentos' }}</a></li>
-                <li><a href="#" class="dropdown-item" @click="pagarTodosLancamentos(item)"><i class="bi bi-trash me-2"></i>Limpar Lançamentos</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="soma-lancamentos mb-2 ms-1 d-flex align-items-center justify-content-between flex-column align-items-start">
-          <div class="d-flex align-items-center justify-content-between w-100">
-            <div class="d-flex flex-column">
-              <span class="text-secondary small">
-                Inicial: <strong>{{ formatCurrency(somaLancamentosPorControle[item.id] || 0, true) }}</strong>
-              </span>
-              <span class="text-secondary small mt-1">
-                Restante: <strong>{{ formatCurrency((somaLancamentosPorControle[item.id] || 0) - (somaPagosPorControle[item.id] || 0), true) }}</strong>
-              </span>
-            </div>
-            <span class="ms-3">Soma: <strong>{{ formatCurrency(somaSelecionadaPorControle[item.id] || 0, true) }}</strong></span>
-          </div>
-          <div class="w-100 d-flex align-items-center justify-content-between mt-1">
-            <span class="badge bg-secondary ms-2">{{ quantidadeLancamentosPorControle[item.id] }} lançamento<span v-if="quantidadeLancamentosPorControle[item.id] !== 1">s</span></span>
-            <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
-              <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
-              </button>
-          </div>
-        </div>
-        <transition-group v-show="controlesExpandidos[item.id]" name="fade-move" tag="ul" class="lista-lancamentos mt-3">
-          <li v-for="l in lancamentosOrdenados(item.id)" :key="l.id + '-' + l.pago" class="lancamento-item d-flex align-items-center justify-content-between p-2 mb-2 rounded" :class="{ 'lancamento-pago': l.pago }">
-            <div>
-              <div class="d-flex flex-column">
-                <span class="lancamento-valor text-success fw-bold">{{ formatCurrency(l.valor, true) }}</span>
-                <span class="lancamento-data text-muted">{{ formatarDataLancamento(l) }}</span>
-              </div>
-              <span class="lancamento-desc">{{ l.descricao }}</span>
-              <span v-if="l.parcela" class="badge bg-info">Parcela {{ l.parcela }}</span>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-              <input type="checkbox" class="form-check-input me-1" :checked="l.pago" @change="marcarPago(l)">
-              <span class="small">Pago</span>
-              <input type="checkbox" class="form-check-input me-1" :checked="l.soma" @change="marcarSoma(l)">
-              <span class="small">Soma</span>
-              <div v-if="controlesEmEdicao[item.id]" class="d-flex gap-1">
-                <button class="btn btn-sm btn-outline-primary" @click="abrirModalEditarLancamento(item, l)">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger" @click="excluirLancamento(l)">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            </div>
-          </li>
-        </transition-group>
-      </li>
-    </ul>
+    </div>
     <ModalCadastraLancamento
       v-if="modalLancamentoAberto"
       :controle="controleSelecionado"
@@ -397,7 +398,6 @@ export default{
 }
 .lista-controles {
   list-style: none;
-  padding: 0;
   margin: 0;
 }
 .controle-card {
