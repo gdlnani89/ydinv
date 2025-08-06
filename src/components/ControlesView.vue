@@ -261,7 +261,7 @@ export default{
 </script>
 <template>
   <section class="content-section">
-    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow">
+    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow sticky-top bg-white">
       <h4>Controles</h4>
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" @click="toggleDropdown" ref="dropdownButton">

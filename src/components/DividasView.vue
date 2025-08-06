@@ -94,13 +94,6 @@
 
           <div class="divida-info">
             <div class="info-row">
-              <!-- <div class="info-item">
-                <span class="info-label">Valor Inicial:</span>
-                <div class="info-value">
-                  
-                </div>
-                <span class="info-value">{{ formatBalanceWithPrivacy(divida.valorInicial) }}</span>
-              </div> -->
               <CampoEditavel
                 :label="'Valor Inicial'"
                 :valor="Number(divida.valorInicial)"
@@ -108,13 +101,20 @@
                 :editando="edCampoValorInicial === divida.id"
                 @editar="edCampoValorInicial = divida.id"
                 @cancelar="edCampoValorInicial = null"
-                @confirmar="valor => confirmarEdicao(divida, 'valorInicial', valor)"
-              />
+                @confirmar="valor => confirmarEdicao(divida, 'valorInicial',valor, 'edCampoValorInicial')"
+                nomeCampo="valorInicial"
+                />
 
-              <div class="info-item">
-                <span class="info-label">Valor Atual:</span>
-                <span class="info-value">{{ formatBalanceWithPrivacy(divida.valorAtual) }}</span>
-              </div>
+              <CampoEditavel
+                :label="'Valor Atual'"
+                :valor="Number(divida.valorAtual)"
+                :quantidade="1"
+                :editando="edCampoValorAtual === divida.id"
+                @editar="edCampoValorAtual = divida.id"
+                @cancelar="edCampoValorAtual = null"
+                @confirmar="valor => confirmarEdicao(divida, 'valorAtual', valor, 'edCampoValorAtual')"
+                nomeCampo="valorAtual"
+                />
             </div>
             
             <div class="info-row">
@@ -255,10 +255,11 @@ export default{
     //   });
     //   this.mostrarModalAtualizacao = true;
     // },
-    confirmarEdicao(divida, campo, valor) {
+    confirmarEdicao(divida, campo, valor, campoValor) {
       divida[campo] = valor;
       this.$emit('atualizar-divida', divida);
-      this.edCampoValorInicial = null;
+      this[campoValor] = null;
+      
     },
     confirmarAtualizacao() {
       if (!this.novoValorAtual || this.novoValorAtual === '0,00') {

@@ -21,7 +21,14 @@
       <div>
         <span class="info-value me-2">{{ formatBalanceWithPrivacy(valor) }}</span>
         <button class="btn btn-pd1" @click="$emit('editar')">
-          <i class="bi bi-pencil"></i>
+          <i
+            v-if="nomeCampo === 'valorAtual'" 
+            class="bi bi-arrow-clockwise"
+          ></i>
+          <i
+            v-if="nomeCampo === 'valorInicial'" 
+            class="bi bi-pencil"
+          ></i>
         </button>
       </div>
 
@@ -43,7 +50,8 @@ const props = defineProps({
   quantidade: {
     type: Number,
     default: 1
-  }
+  },
+  nomeCampo: String
 });
 
 const emit = defineEmits(['editar', 'confirmar', 'cancelar']);
