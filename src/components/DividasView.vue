@@ -1,7 +1,7 @@
 <template>
   <section class="content-section" id="dividas">
     <!-- Área fixa do topo -->
-    <div class="bx-shadow">
+    <div class="pb-2 bx-shadow sticky-top bg-white">
       <div class="d-flex justify-content-between align-items-center py-2 px-3">
         <h4>Dívidas</h4>
         <div class="d-flex align-items-center gap-2">
@@ -68,7 +68,7 @@
               <span class="divida-tipo">{{ divida.tipo }}</span>
             </div>
             <div class="divida-acoes">
-              <button 
+              <!-- <button 
                 class="btn btn-sm btn-outline-success"
                 @click="atualizarValorDivida(divida)"
                 title="Atualizar valor atual"
@@ -81,7 +81,7 @@
                 title="Editar dívida"
               >
                 <i class="bi bi-pencil"></i>
-              </button>
+              </button> -->
               <button 
                 class="btn btn-sm btn-outline-danger"
                 @click="excluirDivida(divida)"
@@ -94,10 +94,23 @@
 
           <div class="divida-info">
             <div class="info-row">
-              <div class="info-item">
+              <!-- <div class="info-item">
                 <span class="info-label">Valor Inicial:</span>
+                <div class="info-value">
+                  
+                </div>
                 <span class="info-value">{{ formatBalanceWithPrivacy(divida.valorInicial) }}</span>
-              </div>
+              </div> -->
+              <CampoEditavel
+                :label="'Valor Inicial'"
+                :valor="Number(divida.valorInicial)"
+                :quantidade="1"
+                :editando="edCampoValorInicial === divida.id"
+                @editar="edCampoValorInicial = divida.id"
+                @cancelar="edCampoValorInicial = null"
+                @confirmar="valor => confirmarEdicao(divida, 'valorInicial', valor)"
+              />
+
               <div class="info-item">
                 <span class="info-label">Valor Atual:</span>
                 <span class="info-value">{{ formatBalanceWithPrivacy(divida.valorAtual) }}</span>
@@ -157,50 +170,14 @@
         @atualizar-divida="$emit('editar-divida', $event)"
       />
 
-      <!-- Modal de Atualização Rápida -->
-      <div v-if="mostrarModalAtualizacao" class="fundo-modal">
-        <div class="card modal-atualizacao">
-          <h5 class="card-title">Atualizar Valor Atual</h5>
-          <p class="text-muted mb-3">{{ dividaAtualizando?.nome }}</p>
-          
-          <div class="mb-3">
-            <label class="form-label">Valor Inicial</label>
-            <input 
-              type="text" 
-              class="form-control" 
-              :value="formatBalanceWithPrivacy(dividaAtualizando?.valorInicial)" 
-              readonly
-            >
-          </div>
-          
-          <div class="mb-3">
-            <label class="form-label">Novo Valor Atual</label>
-            <input 
-              type="text" 
-              class="form-control" 
-              v-model="novoValorAtual"
-              placeholder="0,00"
-              @input="formatarComoMoeda"
-            >
-          </div>
-          
-          <div class="d-flex justify-content-between w-100">
-            <button class="btn btn-primary" @click="confirmarAtualizacao">
-              Atualizar
-            </button>
-            <button class="btn btn-secondary" @click="fecharModalAtualizacao">
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </div>
+  
     </div>
 
   </section>
 </template>
 
 <script>
-import Cabecalho from './Cabecalho.vue';
+import CampoEditavel from './CampoEditavel.vue';
 import BtnAdd from './BtnAdd.vue';
 import ModalCadastraDivida from './ModalCadastraDivida.vue';
 import { useBalancePrivacy } from '../composables/useBalancePrivacy.js';
@@ -224,12 +201,18 @@ export default{
       mostrarModalAtualizacao: false,
       dividaAtualizando: null,
       novoValorAtual: '',
+      edCampoValorAtual: null,
+      edCampoValorInicial: null,
+      edCampoDtVencimento: null,
+      novaDtVencimento: null,
+      novoValorAtual: null,
+      novoValorInicial: null,
     }
   },
   components:{
-    Cabecalho,
     BtnAdd,
     ModalCadastraDivida,
+    CampoEditavel
   },
   methods: {
     abrirModalDivida(){
@@ -264,15 +247,19 @@ export default{
       const valorAtual = parseFloat(divida.valorAtual || 0);
       return valorAtual;
     },
-    atualizarValorDivida(divida) {
-      this.dividaAtualizando = divida;
-      this.novoValorAtual = parseFloat(divida.valorAtual).toLocaleString('pt-BR', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-      this.mostrarModalAtualizacao = true;
+    // atualizarValorDivida(divida) {
+    //   this.dividaAtualizando = divida;
+    //   this.novoValorAtual = parseFloat(divida.valorAtual).toLocaleString('pt-BR', {
+    //     minimumFractionDigits: 2,
+    //     maximumFractionDigits: 2,
+    //   });
+    //   this.mostrarModalAtualizacao = true;
+    // },
+    confirmarEdicao(divida, campo, valor) {
+      divida[campo] = valor;
+      this.$emit('atualizar-divida', divida);
+      this.edCampoValorInicial = null;
     },
-    
     confirmarAtualizacao() {
       if (!this.novoValorAtual || this.novoValorAtual === '0,00') {
         alert('Por favor, digite um valor válido');
@@ -299,11 +286,11 @@ export default{
       this.fecharModalAtualizacao();
     },
     
-    fecharModalAtualizacao() {
-      this.mostrarModalAtualizacao = false;
-      this.dividaAtualizando = null;
-      this.novoValorAtual = '';
-    },
+    // fecharModalAtualizacao() {
+    //   this.mostrarModalAtualizacao = false;
+    //   this.dividaAtualizando = null;
+    //   this.novoValorAtual = '';
+    // },
     
     formatarComoMoeda(e) {
       if (!e || !e.target) return;

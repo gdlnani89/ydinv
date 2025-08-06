@@ -196,3 +196,22 @@ h4{
 .s-c-h1{
   height: 90vh !important;
 }
+.sticky-top {
+  z-index: 1000 !important;
+}
+.info-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.info-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+.info-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}

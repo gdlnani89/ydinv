@@ -105,6 +105,14 @@ function atualizarCartao(cartaoAtualizado){
   }
 }
 
+function atualizarDivida(dividaAtualizada){
+  const index = dividas.value.findIndex(div => div.id === dividaAtualizada.id)
+  if (index !== -1) {
+    dividas.value[index] = dividaAtualizada
+    localStorage.setItem('dividas', JSON.stringify(dividas.value))
+  }
+}
+
 function excluirCartao(cartaoId){
   cartoes.value = cartoes.value.filter(cartao => cartao.id !== cartaoId)
   localStorage.setItem('cartoes', JSON.stringify(cartoes.value))
@@ -136,14 +144,6 @@ function atualizarInvestimento(investimentoAtualizado){
 function excluirInvestimento(investimentoId){
   investimentos.value = investimentos.value.filter(inv => inv.id !== investimentoId)
   localStorage.setItem('investimentos', JSON.stringify(investimentos.value))
-}
-
-function atualizarDivida(dividaAtualizada){
-  const index = dividas.value.findIndex(div => div.id === dividaAtualizada.id)
-  if (index !== -1) {
-    dividas.value[index] = dividaAtualizada
-    localStorage.setItem('dividas', JSON.stringify(dividas.value))
-  }
 }
 
 function excluirDivida(dividaId){
@@ -400,6 +400,7 @@ onMounted(() => {
         @adicionar-divida="adicionarDivida"
         @editar-divida="editarDivida"
         @excluir-divida="excluirDivida"
+        @atualizar-divida="atualizarDivida"
         v-if="currentSection === 'dividas'" 
       />
       <ControlesView v-if="currentSection === 'controles'" />

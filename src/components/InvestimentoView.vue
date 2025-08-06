@@ -175,7 +175,7 @@ export default{
 <template>
   <section class="content-section" id="investimentos">
     <!-- Área fixa do topo -->
-    <div class="bx-shadow">
+    <div class="bx-shadow pb-2 sticky-top bg-white">
       <div class="d-flex justify-content-between align-items-center py-2 px-3">
         <h4>Investimentos</h4>
         <div class="d-flex align-items-center">
@@ -480,26 +480,6 @@ export default{
   gap: 1rem;
   margin-bottom: 0.75rem;
 }
-
-.info-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.info-label {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-}
-
-.info-value {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
 .rentabilidade-info {
   display: flex;
   justify-content: space-between;
