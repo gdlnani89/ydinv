@@ -245,7 +245,7 @@ export default{
         const [ano, mes] = lancamento.data.split('-');
         return `${mes}/${ano.slice(-2)}`;
       }
-      return lancamento.data;
+      return this.formatarData(lancamento.data);
     },
     lancamentosOrdenados(idControle) {
       return this.listaLancamentos
@@ -254,14 +254,30 @@ export default{
           if (a.pago === b.pago) return 0;
           return a.pago ? 1 : -1; // pagos vão para o final
         });
-    }
+    },
+    formatarData(data) {
+      // Formata a data no formato "dd/mm/yyyy"
+      const [ano, mes, dia] = data.split('-');
+      return `${dia}/${mes}/${ano}`;
+    },
+    compartilharControle(controle) {
+      let mensagem = 'Controle: ' + controle.nome + '\n';
+      this.listaLancamentos
+        .filter(l => l.idControle === controle.id)
+        .forEach(lancamento => {
+          mensagem += `Data: ${this.formatarData(lancamento.data)}, Valor: ${formatCurrency(lancamento.valor, true)}, Pago: ${lancamento.pago ? 'Sim' : 'Não'}, Descrição: ${lancamento.descricao || 'Sem descrição'}\n`;
+        });
+      const mensagemEncoded = encodeURIComponent(mensagem);
+      const link = `https://wa.me/?text=${mensagemEncoded}`;
+      window.open(link, '_blank');
+    },
   },
   components: {ModalCadastraLancamento, ModalCadastraControle, ModalGerenciaControles}
 }
 </script>
 <template>
   <section class="content-section">
-    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow sticky-top bg-white">
+    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow stick">
       <h4>Controles</h4>
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" @click="toggleDropdown" ref="dropdownButton">
@@ -285,6 +301,9 @@ export default{
          <div v-for="(item) in listaControles" :key="item.id" class="controle-card mb-4 p-3 rounded shadow-sm bg-light.bg-gradient w-100">
            <div class="d-flex justify-content-between align-items-center mb-2">
              <div class="d-flex align-items-center gap-2">
+               <button class="btn btn-light" @click="compartilharControle(item)">
+                 <i class="bi bi-share-fill"></i>
+                </button>
                <strong class="controle-nome">{{ item.nome }}</strong>
                <!-- <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
                  <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
@@ -292,9 +311,9 @@ export default{
                <div v-if="item.descricao" class="text-muted small mt-1">{{ item.descricao }}</div>
              </div>
              <div class="d-flex align-items-center gap-2">
-               <button class="btn btn-primary btn-sm btn-add-lancamento" @click="abrirModalLancamento(item)">
-                 <i class="bi bi-plus-lg me-1"></i>Add
-               </button>
+                <button class="btn btn-primary btn-sm btn-add-lancamento" @click="abrirModalLancamento(item)">
+                  <i class="bi bi-plus-lg me-1"></i>Add
+                </button>
                <div class="dropdown">
                  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" @click="toggleDropdownControle(item.id)">
                    <i class="bi bi-gear"></i>
