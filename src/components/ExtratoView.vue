@@ -130,7 +130,7 @@ export default {
 <template>
   <section class="content-section">
     <!-- Cabeçalho -->
-    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow mb-3">
+    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow sticky-top mb-3 bg1">
       <h4>Extrato</h4>
       <div class="filtros-container">
         <select v-model="contaSelecionada" class="form-select form-select-sm filtro-conta">

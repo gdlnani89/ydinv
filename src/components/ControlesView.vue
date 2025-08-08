@@ -263,13 +263,16 @@ export default{
     compartilharControle(controle) {
       let mensagem = 'Controle: ' + controle.nome + '\n';
       this.listaLancamentos
-        .filter(l => l.idControle === controle.id)
+        .filter(l => l.idControle === controle.id )
         .forEach(lancamento => {
-          mensagem += `Data: ${this.formatarData(lancamento.data)}, Valor: ${formatCurrency(lancamento.valor, true)}, Pago: ${lancamento.pago ? 'Sim' : 'Não'}, Descrição: ${lancamento.descricao || 'Sem descrição'}\n`;
+          mensagem += `Data: ${this.formatarData(lancamento.data)}, Valor: ${formatCurrency(lancamento.valor, true)}, ${lancamento.pago ? 'Pago,' : ''} ${lancamento.descricao ? 'Descrição: ' + lancamento.descricao : ''}\n`;
         });
+      
       const mensagemEncoded = encodeURIComponent(mensagem);
       const link = `https://wa.me/?text=${mensagemEncoded}`;
       window.open(link, '_blank');
+      console.log(mensagem);
+      
     },
   },
   components: {ModalCadastraLancamento, ModalCadastraControle, ModalGerenciaControles}
@@ -277,7 +280,7 @@ export default{
 </script>
 <template>
   <section class="content-section">
-    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow stick">
+    <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow sticky-top bg1">
       <h4>Controles</h4>
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" @click="toggleDropdown" ref="dropdownButton">
@@ -298,10 +301,10 @@ export default{
     <!-- Removido o formulário antigo aqui -->
      <div class="scrollable-content s-c-h1 d-flex flex-column align-items-center">
 
-         <div v-for="(item) in listaControles" :key="item.id" class="controle-card mb-4 p-3 rounded shadow-sm bg-light.bg-gradient w-100">
+         <div v-for="(item) in listaControles" :key="item.id" class="controle-card mb-4 p-3 rounded shadow-sm bg-light.bg-gradient w-100 bg1">
            <div class="d-flex justify-content-between align-items-center mb-2">
              <div class="d-flex align-items-center gap-2">
-               <button class="btn btn-light" @click="compartilharControle(item)">
+               <button class="btn btn-light d-flex align-items-center justify-content-center" @click="compartilharControle(item)">
                  <i class="bi bi-share-fill"></i>
                 </button>
                <strong class="controle-nome">{{ item.nome }}</strong>
@@ -339,26 +342,26 @@ export default{
              </div>
              <div class="w-100 d-flex align-items-center justify-content-between mt-1">
                <span class="badge bg-secondary ms-2">{{ quantidadeLancamentosPorControle[item.id] }} lançamento<span v-if="quantidadeLancamentosPorControle[item.id] !== 1">s</span></span>
-               <button class="btn btn-sm btn-light p-1 ms-1" @click="expandirControle(item.id)">
+               <button class="btn btn-sm p-1 ms-1" @click="expandirControle(item.id)">
                  <i :class="controlesExpandidos[item.id] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
                  </button>
              </div>
            </div>
            <transition-group v-show="controlesExpandidos[item.id]" name="fade-move" tag="ul" class="lista-lancamentos mt-3">
-             <li v-for="l in lancamentosOrdenados(item.id)" :key="l.id + '-' + l.pago" class="lancamento-item d-flex align-items-center justify-content-between p-2 mb-2 rounded" :class="{ 'lancamento-pago': l.pago }">
+             <li v-for="l in lancamentosOrdenados(item.id)" :key="l.id + '-' + l.pago" class="lancamento-item d-flex align-items-center justify-content-between p-2 mb-2 rounded bg2" :class="{ 'lancamento-pago': l.pago }">
                <div>
                  <div class="d-flex flex-column">
                    <span class="lancamento-valor text-success fw-bold">{{ formatCurrency(l.valor, true) }}</span>
                    <span class="lancamento-data text-muted">{{ formatarDataLancamento(l) }}</span>
                  </div>
-                 <span class="lancamento-desc">{{ l.descricao }}</span>
+                 <span class="lancamento-desc" style="color:black !important">{{ l.descricao }}</span>
                  <span v-if="l.parcela" class="badge bg-info">Parcela {{ l.parcela }}</span>
                </div>
                <div class="d-flex align-items-center gap-2">
                  <input type="checkbox" class="form-check-input me-1" :checked="l.pago" @change="marcarPago(l)">
-                 <span class="small">Pago</span>
+                 <span class="small" style="color:black !important">Pago</span>
                  <input type="checkbox" class="form-check-input me-1" :checked="l.soma" @change="marcarSoma(l)">
-                 <span class="small">Soma</span>
+                 <span class="small" style="color:black !important">Soma</span>
                  <div v-if="controlesEmEdicao[item.id]" class="d-flex gap-1">
                    <button class="btn btn-sm btn-outline-primary" @click="abrirModalEditarLancamento(item, l)">
                      <i class="bi bi-pencil"></i>
@@ -427,34 +430,17 @@ export default{
   font-size: 1.15rem;
 }
 .btn-add-lancamento {
-  font-weight: 500;
-  border-radius: 6px;
-  padding: 0.4rem 0.8rem;
   font-size: 0.875rem;
   box-shadow: 0 2px 4px rgba(13,110,253,0.15);
   transition: all 0.2s;
   border: none;
+  width: max-content;
 }
 .btn-add-lancamento:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(13,110,253,0.25);
 }
-.dropdown .btn {
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #dee2e6;
-  background: #fff;
-  color: #6c757d;
-  transition: all 0.2s;
-}
-.dropdown .btn:hover {
-  background: #f8f9fa;
-  border-color: #adb5bd;
-  color: #495057;
-}
-.dropdown .btn:focus {
-  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
-}
+
 .lista-lancamentos {
   list-style: none;
   padding: 0;
@@ -508,7 +494,7 @@ export default{
   color: #212529;
   text-align: left;
   list-style: none;
-  background-color: #fff;
+  background-color: var(--card-bg);
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.375rem;
@@ -545,10 +531,11 @@ export default{
   background-color: #0d6efd;
 }
 .btn-light {
-  background: #f8f9fa;
+  background: #25D366;
   border: 1px solid #dee2e6;
-  color: #495057;
   transition: background 0.2s, color 0.2s;
+  width: 30px;
+  height: 30px;
 }
 .btn-light:hover {
   background: #e2e6ea;

@@ -1,8 +1,8 @@
 <template>
   <section class="content-section" id="dividas">
     <!-- Área fixa do topo -->
-    <div class="pb-2 bx-shadow sticky-top bg-white">
-      <div class="d-flex justify-content-between align-items-center py-2 px-3">
+    <div class="pb-2 bx-shadow sticky-top bg1">
+      <div class="d-flex justify-content-between align-items-center py-2 px-3 mb-2">
         <h4>Dívidas</h4>
         <div class="d-flex align-items-center gap-2">
           <button 
@@ -591,14 +591,6 @@ export default{
   box-shadow: var(--input-focus-shadow);
 }
 
-.modal-atualizacao .btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
 
 .modal-atualizacao .btn-primary {
   background-color: var(--btn-primary-bg);

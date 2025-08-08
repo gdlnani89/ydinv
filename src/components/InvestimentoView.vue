@@ -175,8 +175,8 @@ export default{
 <template>
   <section class="content-section" id="investimentos">
     <!-- Área fixa do topo -->
-    <div class="bx-shadow pb-2 sticky-top bg-white">
-      <div class="d-flex justify-content-between align-items-center py-2 px-3">
+    <div class="bx-shadow pb-2 sticky-top bg1">
+      <div class="d-flex justify-content-between align-items-center py-2 px-3 mb-2">
         <h4>Investimentos</h4>
         <div class="d-flex align-items-center">
           <button 
