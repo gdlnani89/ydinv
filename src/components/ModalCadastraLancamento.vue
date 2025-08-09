@@ -1,14 +1,12 @@
 <template>
-  <div class="modal-backdrop" @click="$emit('fechar')">
-    <div class="modal-dialog" @click.stop>
+  <div class="fundo-modal" @click="$emit('fechar')">
+    <div class="card-modal" @click.stop>
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">
-            <i class="bi bi-plus-circle me-2"></i>
+        
+          <h5 class="card-title">
             {{ lancamento ? 'Editar Lançamento' : 'Novo Lançamento' }}
           </h5>
-          <button type="button" class="btn-close" @click="$emit('fechar')"></button>
-        </div>
+        
         <form @submit.prevent="salvar">
           <div class="modal-body">
             <div class="mb-3">
@@ -30,7 +28,7 @@
                 <i class="bi bi-currency-dollar me-1"></i>Valor *
               </label>
               <div class="input-group">
-                <span class="input-group-text">R$</span>
+                <span class="input-group-text" style="color: black !important;">R$</span>
                 <input type="text" class="form-control form-control-lg" v-model="form.valor" @input="mascararValor" required>
               </div>
             </div>
@@ -51,12 +49,12 @@
               <input type="text" class="form-control" v-model="form.descricao" maxlength="60" placeholder="Ex: Vianda do dia">
             </div>
           </div>
-          <div class="modal-footer">
+          <div class="d-flex justify-content-between w-100 border-top pt-3">
             <button type="button" class="btn btn-outline-secondary" @click="$emit('fechar')">
               <i class="bi bi-x-lg me-1"></i>Cancelar
             </button>
             <button type="submit" class="btn btn-primary">
-              <i class="bi bi-check-lg me-1"></i>{{ lancamento ? 'Atualizar' : 'Salvar' }}
+              <i class="bi bi-check-lg me-1"></i>{{ lancamento ? 'Atualizar' : 'Adicionar' }}
             </button>
           </div>
         </form>
@@ -214,61 +212,14 @@ export default {
 .modal-body {
   padding: 2rem;
 }
-.form-label {
-  color: #495057;
-  margin-bottom: 0.5rem;
-}
-.form-control {
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-.form-control:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-}
-.form-control-lg {
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-}
-.input-group-text {
-  background: #f8f9fa;
-  border: 2px solid #e9ecef;
-  border-right: none;
-  color: #6c757d;
-  font-weight: 500;
-}
-.input-group .form-control {
-  border-left: none;
-}
+
 .modal-footer {
   padding: 1.5rem 2rem;
   border-top: 1px solid #e9ecef;
   background: #f8f9fa;
   border-radius: 0 0 16px 16px;
 }
-.btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-}
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-.btn-outline-secondary {
-  border: 2px solid #6c757d;
-  color: #6c757d;
-}
-.btn-outline-secondary:hover {
-  background: #6c757d;
-  border-color: #6c757d;
-}
+
 @keyframes slideIn {
   from { 
     transform: translateY(-20px) scale(0.95); 

@@ -1,6 +1,6 @@
 <template>
     <div class="fundo-modal">
-        <div class="card">
+        <div class="card bg1">
             <h5 class="card-title">{{ modoEdicao ? 'Editar Cartão' : 'Cadastrar Cartão' }}</h5>
 
             <div class="">
@@ -32,6 +32,7 @@
                     type="text" 
                     class="form-control" 
                     v-model="limite" 
+                    @input="formatarComoMoeda('limite', $event)"
                     placeholder="5000,00"
                 >
 
@@ -92,7 +93,7 @@
 </template>
 
 <script>
-
+import { useMoeda } from '../composables/useMoeda';
 export default {
     props: ['cartao'],
     data() {
@@ -170,6 +171,7 @@ export default {
                 id: this.modoEdicao ? this.cartaoEditando.id : Date.now(),
                 nome: this.nome.trim(),
                 banco: this.bancos,
+                limite : parseFloat(this.limite.toString().replace(',', '.')),
                 diaCorte: parseInt(this.diaCorte),
                 diaVencimento: parseInt(this.diaVencimento),
                 cor: this.corSelecionada
@@ -199,22 +201,17 @@ export default {
             this.cartaoEditando = cartao;
             this.nome = cartao.nome;
             this.banco = cartao.banco;
+            this.limite = cartao.limite.toFixed(2).replace('.', ',');
             this.diaCorte = cartao.diaCorte;
             this.diaVencimento = cartao.diaVencimento;
             this.corSelecionada = cartao.cor;
             
-            console.log('Formulário preenchido:', {
-                nome: this.nome,
-                banco: this.banco,
-                diaCorte: this.diaCorte,
-                diaVencimento: this.diaVencimento,
-                cor: this.corSelecionada
-            });
         },
         
         resetarFormulario() {
             this.nome = '';
             this.banco = '';
+            this.limite = '';
             this.diaCorte = '';
             this.diaVencimento = '';
             this.corSelecionada = '#007bff';
@@ -226,6 +223,7 @@ export default {
                 this.bancoOutros = '';
             }
         },
+        ...useMoeda()
     }
 }
 </script>

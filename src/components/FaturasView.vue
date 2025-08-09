@@ -149,7 +149,7 @@ export default{
 <template>
   <section class="content-section" id="faturas">
     <!-- Área fixa do topo -->
-    <div class="pb-2 bx-shadow sticky-top bg-white">
+    <div class="pb-2 bx-shadow sticky-top bg1">
       <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow mb-3">
         <h4>Faturas</h4>
         <div class="d-flex align-items-center gap-2">
@@ -180,7 +180,7 @@ export default{
       <div 
         v-for="cartao in cartoes" 
         :key="cartao.id" 
-        class="cartao-card"
+        class="cartao-card bg1"
         :style="{ '--cartao-cor': cartao.cor }"
       >
         <div class="cartao-header">
@@ -213,14 +213,14 @@ export default{
         </div>
 
         <!-- Informações do cartão -->
-        <div class="cartao-info">
+        <div class="cartao-info bg2">
           <div class="info-item">
-            <span class="info-label">Corte:</span>
-            <span class="info-value">{{ cartao.diaCorte }}º</span>
+            <span class="info-label" style="color: black !important">Corte:</span>
+            <span class="info-value" style="color: black !important">{{ cartao.diaCorte }}º</span>
           </div>
           <div class="info-item">
-            <span class="info-label">Vencimento:</span>
-            <span class="info-value">{{ cartao.diaVencimento }}º</span>
+            <span class="info-label" style="color: black !important">Vencimento:</span>
+            <span class="info-value" style="color: black !important">{{ cartao.diaVencimento }}º</span>
           </div>
         </div>
         

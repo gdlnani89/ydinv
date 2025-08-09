@@ -66,7 +66,7 @@
                             class="form-control input-modal"
                             v-model="valorInicial"
                             placeholder="0,00"
-                            @input="formatarComoMoedaInicial"
+                            @input="formatarComoMoeda('valorInicial', $event)"
                             >
                         
                     </div>
@@ -77,7 +77,8 @@
                             class="form-control input-modal"
                             v-model="valorAtual"
                             placeholder="0,00"
-                            @input="formatarComoMoedaAtual"
+                            @input="formatarComoMoeda('valorAtual', $event)"
+                            
                             >
                     </div>
                 </div>
@@ -285,20 +286,20 @@ export default {
             }
         },
         
-        formatarComoMoedaInicial(e) {
+        formatarComoMoeda(campo, e) {
             if (!e || !e.target) return;
             
             // Remove tudo que não é número
             let valorApenasDigitos = e.target.value.replace(/\D/g, '');
 
             if (!valorApenasDigitos) {
-                this.valorInicial = '0,00';
+                this[campo] = '0,00';
                 return;
             }
 
             const valorNumerico = Number(valorApenasDigitos) / 100;
 
-            this.valorInicial = valorNumerico.toLocaleString('pt-BR', {
+            this[campo] = valorNumerico.toLocaleString('pt-BR', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             });
@@ -317,20 +318,6 @@ export default {
     font-weight: 500;
     color: var(--text-primary);
     margin-bottom: 0.5rem;
-}
-
-.btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-primary {
-    background-color: var(--btn-primary-bg);
-    color: var(--btn-primary-text);
 }
 
 .btn-primary:hover {

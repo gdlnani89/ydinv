@@ -138,7 +138,7 @@ export default{
 <template>
   <section class="content-section" id="despesas">
     <!-- Área fixa do topo -->
-    <div class="pb-2 bx-shadow sticky-top bg-white">
+    <div class="pb-2 bx-shadow sticky-top bg1">
       <div class="d-flex justify-content-between align-items-center py-2 px-3 bx-shadow mb-3">
         <h4>Despesas</h4>
         <div class="d-flex align-items-center gap-2">
@@ -171,7 +171,7 @@ export default{
       <div 
         v-for="conta in contas" 
         :key="conta.id" 
-        class="conta-card"
+        class="conta-card bg1"
         :style="{ '--conta-cor': conta.cor }"
       >
         <div class="conta-header">
