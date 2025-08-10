@@ -4,7 +4,6 @@ import BtnAdd from './BtnAdd.vue';
 import ModalCadastraInvestimento from './ModalCadastraInvestimento.vue';
 import { useBalancePrivacy } from '../composables/useBalancePrivacy.js';
 import currencyMixin from '../mixins/currencyMixin.js';
-import { formatarComoMoeda } from '../utils/formatters.js';
 
 export default{
   mixins: [currencyMixin],
@@ -140,9 +139,6 @@ export default{
       if (rentabilidade > 0) return 'bi-arrow-up-circle-fill';
       if (rentabilidade < 0) return 'bi-arrow-down-circle-fill';
       return 'bi-dash-circle-fill';
-    },
-    formatarMoeda(valor){
-      return formatarComoMoeda(valor);
     }
   },
   computed:{

@@ -286,13 +286,7 @@ export default{
       this.$emit('editar-divida', dividaAtualizada);
       this.fecharModalAtualizacao();
     },
-    
-    // fecharModalAtualizacao() {
-    //   this.mostrarModalAtualizacao = false;
-    //   this.dividaAtualizando = null;
-    //   this.novoValorAtual = '';
-    // },
-    
+        
     formatarComoMoeda(e) {
       if (!e || !e.target) return;
       

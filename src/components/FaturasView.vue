@@ -98,9 +98,6 @@ export default{
       return `${meses[parseInt(mes, 10)]}/${ano}`;
     }
   },
-  mounted() {
-    // Não precisa carregar do localStorage aqui, pois os cartões e faturas vêm como prop
-  },
   computed:{
     // Retorna todas as faturas
     faturasFiltradas() {

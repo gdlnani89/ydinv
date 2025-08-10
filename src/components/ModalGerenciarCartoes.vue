@@ -8,11 +8,11 @@
         </button>
       </div>
       <div v-if="cartoes.length > 0" class="cartoes-lista">
-        <div v-for="cartao in cartoes" :key="cartao.id" class="cartao-item">
+        <div v-for="cartao in cartoes" :key="cartao.id" class="cartao-item bg2">
           <div class="cartao-info">
-            <div class="cartao-nome">{{ cartao.nome }}</div>
-            <div class="cartao-bandeira">{{ cartao.bandeira }}</div>
-            <div class="cartao-limite">Limite: {{ formatCurrency(cartao.limite) }}</div>
+            <div class="cartao-nome" style="color: black !important">{{ cartao.nome }}</div>
+            <div class="cartao-bandeira" style="color: black !important">{{ cartao.bandeira }}</div>
+            <div class="cartao-limite" style="color: black !important">Limite: {{ formatCurrency(cartao.limite) }}</div>
           </div>
           <div class="cartao-acoes">
             <button class="btn btn-sm btn-outline-primary" @click="editarCartao(cartao)" title="Editar cartão">

@@ -299,7 +299,7 @@ export default{
       <h5 class="text-muted">Clique no <i class="bi bi-three-dots-vertical"></i> e adicione.</h5>
     </div>
     <!-- Removido o formulário antigo aqui -->
-     <div class="scrollable-content s-c-h1 d-flex flex-column align-items-center">
+     <div class="scrollable-content d-flex flex-column align-items-center">
 
          <div v-for="(item) in listaControles" :key="item.id" class="controle-card mb-4 p-3 rounded shadow-sm bg-light.bg-gradient w-100 bg1">
            <div class="d-flex justify-content-between align-items-center mb-2">
